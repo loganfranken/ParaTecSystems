@@ -6,8 +6,8 @@ function Game(canvas)
   this.isMouseDown = false;
   this.linePoints = [];
 
-  var canvasWidth = canvas.width;
-  var canvasHeight = canvas.height;
+  this.canvasWidth = canvas.width;
+  this.canvasHeight = canvas.height;
 }
 
 Game.prototype.update = function()
@@ -18,6 +18,12 @@ Game.prototype.draw = function()
 {
   var context = this.context;
 
+  // Clear the canvas
+  context.fillStyle = '#FFF';
+  context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+  // Draw the user's line
+  context.fillStyle = '#000';
   context.beginPath();
   context.lineWidth = 5;
 
@@ -59,6 +65,7 @@ Game.prototype.start = function()
 Game.prototype.handleMouseUp = function(game, mouseEvent)
 {
   game.isMouseDown = false;
+  game.linePoints = [];
 }
 
 Game.prototype.handleMouseDown = function(game, mouseEvent)
@@ -70,7 +77,6 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
 {
   if(game.isMouseDown)
   {
-    console.log(mouseEvent);
     game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
   }
 }
