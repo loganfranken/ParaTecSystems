@@ -8,6 +8,8 @@ function Game(canvas)
 
   this.canvasWidth = canvas.width;
   this.canvasHeight = canvas.height;
+
+  this.startNode = new Node(NODE_TYPE.START, 100, 100);
 }
 
 Game.prototype.update = function()
@@ -32,6 +34,9 @@ Game.prototype.draw = function()
   // Draw the bottom half
   context.fillStyle = '#333';
   context.fillRect(0, halfCanvasHeight, this.canvasWidth, halfCanvasHeight);
+
+  // Draw the start node
+  this.startNode.draw(context);
 
   // Draw the user's line
   context.strokeStyle = '#000';
