@@ -1,6 +1,5 @@
 # TODO
 
-* Detect reaching the end point (non-reflected)
 * Add points you have to pass over (non-reflected)
 * Add blocks that can get in your way (non-reflected)
 * Don't allow the line to overlap itself

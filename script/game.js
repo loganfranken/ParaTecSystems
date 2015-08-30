@@ -9,8 +9,20 @@ function Game(canvas)
   this.canvasWidth = canvas.width;
   this.canvasHeight = canvas.height;
 
+  this.nodes = [];
+
+  // Start Node
   this.startNode = new Node(NODE_TYPE.START, 100, 100);
+  this.nodes.push(this.startNode);
+
+  // End Node
   this.endNode = new Node(NODE_TYPE.END, 800, 100);
+  this.nodes.push(this.endNode);
+
+  // Connecting Nodes
+  this.nodes.push(new Node(NODE_TYPE.CONNECT, 200, 200));
+  this.nodes.push(new Node(NODE_TYPE.CONNECT, 500, 200));
+
 }
 
 Game.prototype.update = function()
@@ -37,10 +49,9 @@ Game.prototype.draw = function()
   context.fillRect(0, halfCanvasHeight, this.canvasWidth, halfCanvasHeight);
 
   // Draw the start node
-  this.startNode.draw(context);
-
-  // Draw the end node
-  this.endNode.draw(context);
+  this.nodes.forEach(function(node, i) {
+    node.draw(context);
+  });
 
   // Draw the user's line
   context.strokeStyle = '#000';

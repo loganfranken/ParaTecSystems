@@ -19,7 +19,19 @@ function Node(nodeType, x, y) {
 // Draws the node to a given canvas context
 Node.prototype.draw = function(context) {
 
-  context.fillStyle = '#000';
+  if(this.type === NODE_TYPE.START)
+  {
+    context.fillStyle = 'green';
+  }
+  else if(this.type === NODE_TYPE.END)
+  {
+    context.fillStyle = 'red';
+  }
+  else if(this.type === NODE_TYPE.CONNECT)
+  {
+    context.fillStyle = 'blue';
+  }
+
   context.beginPath();
   context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
   context.fill();
