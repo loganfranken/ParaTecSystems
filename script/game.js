@@ -10,6 +10,7 @@ function Game(canvas)
   this.canvasHeight = canvas.height;
 
   this.startNode = new Node(NODE_TYPE.START, 100, 100);
+  this.endNode = new Node(NODE_TYPE.END, 800, 100);
 }
 
 Game.prototype.update = function()
@@ -37,6 +38,9 @@ Game.prototype.draw = function()
 
   // Draw the start node
   this.startNode.draw(context);
+
+  // Draw the end node
+  this.endNode.draw(context);
 
   // Draw the user's line
   context.strokeStyle = '#000';
@@ -127,6 +131,11 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
     if(hasLineStarted || this.startNode.contains(mouseEvent.clientX, mouseEvent.clientY))
     {
       game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
+    }
+
+    if(this.endNode.contains(mouseEvent.clientX, mouseEvent.clientY))
+    {
+      console.log("You've reached the end!");
     }
   }
 }
