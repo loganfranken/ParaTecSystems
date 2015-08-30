@@ -12,25 +12,71 @@ function Game(canvas)
   this.nodes = [];
   this.activeNodes = [];
 
-  // Start Node
-  this.startNode = new Node(NODE_TYPE.START, 100, 100);
-  this.nodes.push(this.startNode);
+  this.startNode = null;
+  this.endNode = null;
 
-  // End Node
-  this.endNode = new Node(NODE_TYPE.END, 100, 500);
-  this.nodes.push(this.endNode);
-
-  // Connecting Nodes
-  this.nodes.push(new Node(NODE_TYPE.CONNECT, 200, 200));
-  this.nodes.push(new Node(NODE_TYPE.CONNECT, 500, 200));
-  this.nodes.push(new Node(NODE_TYPE.CONNECT, 500, 400));
-
-  // Blocks
   this.blocks = [];
 
-  this.blocks.push(new Block(300, 150, 100, 100));
-  this.blocks.push(new Block(600, 450, 100, 100));
+  this.currentStage = 0;
+  this.loadStage(this.currentStage);
+}
 
+Game.prototype.resetStage = function()
+{
+  this.resetLine();
+
+  this.nodes = [];
+  this.activeNodes = [];
+
+  this.startNode = null;
+  this.endNode = null;
+
+  this.blocks = [];
+}
+
+Game.prototype.advanceStage = function()
+{
+  this.resetStage();
+  this.currentStage++;
+  this.loadStage(this.currentStage);
+}
+
+Game.prototype.loadStage = function(index)
+{
+  var self = this;
+  var stageData = stages[index];
+  var stageElements = stageData.split(';');
+
+  stageElements.forEach(function(elem, i) {
+
+    var elemData = elem.split(/[,\(\)]/);
+
+    switch(elemData[0])
+    {
+      // Start Node
+      case 'S':
+        self.startNode = new Node(NODE_TYPE.START, elemData[1], elemData[2]);
+        self.nodes.push(self.startNode);
+        break;
+
+      // End Node
+      case 'E':
+        self.endNode = new Node(NODE_TYPE.END, elemData[1], elemData[2]);
+        self.nodes.push(self.endNode);
+        break;
+
+      // Connecting Node
+      case 'C':
+        self.nodes.push(new Node(NODE_TYPE.CONNECT, elemData[1], elemData[2]));
+        break;
+
+      // Block
+      case 'B':
+        self.blocks.push(new Block(elemData[1], elemData[2], elemData[3], elemData[4]));
+        break;
+    }
+
+  });
 }
 
 Game.prototype.update = function()
@@ -177,7 +223,7 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
       if(game.activeNodes[i]) {
         return;
       }
-
+      
       if(node.contains(mouseX, mouseY) || node.contains(reverseMouseX, reverseMouseY)) {
         game.activeNodes[i] = true;
       }
@@ -201,7 +247,7 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
     {
       if(activeNodesCount === game.nodes.length)
       {
-        console.log("You've won!");
+        game.advanceStage();
       }
       else
       {
