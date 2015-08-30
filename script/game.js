@@ -120,8 +120,13 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
     game.linePoints = [];
   }
 
+  var hasLineStarted = game.linePoints.length > 0;
+
   if(game.isMouseDown)
   {
-    game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
+    if(hasLineStarted || this.startNode.contains(mouseEvent.clientX, mouseEvent.clientY))
+    {
+      game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
+    }
   }
 }

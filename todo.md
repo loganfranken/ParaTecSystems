@@ -1,6 +1,5 @@
 # TODO
 
-* Only allow starting from a specified start point
 * Detect reaching the end point
 * Add points you have to pass over
 * Add blocks that can get in your way
