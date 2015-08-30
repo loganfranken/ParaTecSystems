@@ -10,6 +10,7 @@ function Game(canvas)
   this.canvasHeight = canvas.height;
 
   this.nodes = [];
+  this.activeNodes = [];
 
   // Start Node
   this.startNode = new Node(NODE_TYPE.START, 100, 100);
@@ -117,10 +118,16 @@ Game.prototype.start = function()
   loop();
 }
 
+Game.prototype.resetLine = function()
+{
+  this.linePoints = [];
+  this.activeNodes = [];
+}
+
 Game.prototype.handleMouseUp = function(game, mouseEvent)
 {
   game.isMouseDown = false;
-  game.linePoints = [];
+  game.resetLine();
 }
 
 Game.prototype.handleMouseDown = function(game, mouseEvent)
@@ -132,21 +139,46 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
 {
   if(mouseEvent.clientY > (game.canvasHeight/2))
   {
-    game.linePoints = [];
+    game.resetLine();
   }
 
   var hasLineStarted = game.linePoints.length > 0;
 
   if(game.isMouseDown)
   {
-    if(hasLineStarted || this.startNode.contains(mouseEvent.clientX, mouseEvent.clientY))
+    // Activate all nodes that the user is touching
+    game.nodes.forEach(function(node, i) {
+
+      if(game.activeNodes[i]) {
+        return;
+      }
+
+      if(node.contains(mouseEvent.clientX, mouseEvent.clientY)) {
+        game.activeNodes[i] = true;
+      }
+
+    });
+
+    if(hasLineStarted || game.activeNodes[0])
     {
       game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
     }
 
-    if(this.endNode.contains(mouseEvent.clientX, mouseEvent.clientY))
+    var activeNodesCount = 0;
+    game.activeNodes.forEach(function(node, i) {
+      activeNodesCount++;
+    });
+
+    if(game.activeNodes[1])
     {
-      console.log("You've reached the end!");
+      if(activeNodesCount === game.nodes.length)
+      {
+        console.log("You've won!")
+      }
+      else
+      {
+        game.resetLine();
+      }
     }
   }
 }
