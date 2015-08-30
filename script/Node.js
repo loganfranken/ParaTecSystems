@@ -41,6 +41,7 @@ Node.prototype.draw = function(context) {
 // Determines if a given (x, y) coordinate is located within the Node
 Node.prototype.contains = function(x, y) {
 
+  // Source: http://stackoverflow.com/questions/481144/equation-for-testing-if-a-point-is-inside-a-circle
   return (Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2)) <= this.radiusSquared;
 
 }

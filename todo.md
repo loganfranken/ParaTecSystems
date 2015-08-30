@@ -1,7 +1,7 @@
 # TODO
 
-* Add blocks that can get in your way (non-reflected)
+* Create a level system
+
+# TODO (Extra)
+
 * Don't allow the line to overlap itself
-* Detect reaching the end point (reflected)
-* Add points you have to pass over (reflected)
-* Add blocks that can get in your way (reflected)

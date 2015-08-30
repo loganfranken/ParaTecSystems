@@ -17,17 +17,19 @@ function Game(canvas)
   this.nodes.push(this.startNode);
 
   // End Node
-  this.endNode = new Node(NODE_TYPE.END, 800, 100);
+  this.endNode = new Node(NODE_TYPE.END, 100, 500);
   this.nodes.push(this.endNode);
 
   // Connecting Nodes
   this.nodes.push(new Node(NODE_TYPE.CONNECT, 200, 200));
   this.nodes.push(new Node(NODE_TYPE.CONNECT, 500, 200));
+  this.nodes.push(new Node(NODE_TYPE.CONNECT, 500, 400));
 
   // Blocks
   this.blocks = [];
 
   this.blocks.push(new Block(300, 150, 100, 100));
+  this.blocks.push(new Block(600, 450, 100, 100));
 
 }
 
@@ -147,7 +149,14 @@ Game.prototype.handleMouseDown = function(game, mouseEvent)
 
 Game.prototype.handleMouseMove = function(game, mouseEvent)
 {
-  if(mouseEvent.clientY > (game.canvasHeight/2))
+  var mouseX = mouseEvent.clientX;
+  var mouseY = mouseEvent.clientY;
+
+  var reverseMouseX = game.canvasWidth - mouseX;
+  var reverseMouseY = game.canvasHeight - mouseY;
+
+  // Detect if user has moved outside the drawing bounds
+  if(mouseY > (game.canvasHeight/2))
   {
     game.resetLine();
   }
@@ -157,10 +166,9 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
     // Detect if user has touched any blocks
     game.blocks.forEach(function(block, i) {
 
-      if(block.contains(mouseEvent.clientX, mouseEvent.clientY)) {
+      if(block.contains(mouseX, mouseY) || block.contains(reverseMouseX, reverseMouseY)) {
         game.resetLine();
       }
-
     });
 
     // Activate all nodes that the user is touching
@@ -170,18 +178,20 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
         return;
       }
 
-      if(node.contains(mouseEvent.clientX, mouseEvent.clientY)) {
+      if(node.contains(mouseX, mouseY) || node.contains(reverseMouseX, reverseMouseY)) {
         game.activeNodes[i] = true;
       }
 
     });
 
+    // Draw the line
     var hasLineStarted = game.linePoints.length > 0;
     if(hasLineStarted || game.activeNodes[0])
     {
-      game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
+      game.linePoints.push({ x: mouseX, y: mouseY });
     }
 
+    // Get a count of active nodes
     var activeNodesCount = 0;
     game.activeNodes.forEach(function(node, i) {
       activeNodesCount++;
@@ -191,7 +201,7 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
     {
       if(activeNodesCount === game.nodes.length)
       {
-        console.log("You've won!")
+        console.log("You've won!");
       }
       else
       {
