@@ -24,6 +24,11 @@ function Game(canvas)
   this.nodes.push(new Node(NODE_TYPE.CONNECT, 200, 200));
   this.nodes.push(new Node(NODE_TYPE.CONNECT, 500, 200));
 
+  // Blocks
+  this.blocks = [];
+
+  this.blocks.push(new Block(300, 150, 100, 100));
+
 }
 
 Game.prototype.update = function()
@@ -49,9 +54,14 @@ Game.prototype.draw = function()
   context.fillStyle = '#333';
   context.fillRect(0, halfCanvasHeight, this.canvasWidth, halfCanvasHeight);
 
-  // Draw the start node
+  // Draw the nodes
   this.nodes.forEach(function(node, i) {
     node.draw(context);
+  });
+
+  // Draw the blocks
+  this.blocks.forEach(function(block, i) {
+    block.draw(context);
   });
 
   // Draw the user's line
@@ -142,10 +152,17 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
     game.resetLine();
   }
 
-  var hasLineStarted = game.linePoints.length > 0;
-
   if(game.isMouseDown)
   {
+    // Detect if user has touched any blocks
+    game.blocks.forEach(function(block, i) {
+
+      if(block.contains(mouseEvent.clientX, mouseEvent.clientY)) {
+        game.resetLine();
+      }
+
+    });
+
     // Activate all nodes that the user is touching
     game.nodes.forEach(function(node, i) {
 
@@ -159,6 +176,7 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
 
     });
 
+    var hasLineStarted = game.linePoints.length > 0;
     if(hasLineStarted || game.activeNodes[0])
     {
       game.linePoints.push({ x: mouseEvent.clientX, y: mouseEvent.clientY });
