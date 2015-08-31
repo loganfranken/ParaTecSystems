@@ -55,24 +55,24 @@ Game.prototype.loadStage = function(index)
     {
       // Start Node
       case 'S':
-        self.startNode = new Node(NODE_TYPE.START, elemData[1], elemData[2]);
+        self.startNode = new Node(NODE_TYPE.START, parseInt(elemData[1], 10), parseInt(elemData[2], 10));
         self.nodes.push(self.startNode);
         break;
 
       // End Node
       case 'E':
-        self.endNode = new Node(NODE_TYPE.END, elemData[1], elemData[2]);
+        self.endNode = new Node(NODE_TYPE.END, parseInt(elemData[1], 10), parseInt(elemData[2], 10));
         self.nodes.push(self.endNode);
         break;
 
       // Connecting Node
       case 'C':
-        self.nodes.push(new Node(NODE_TYPE.CONNECT, elemData[1], elemData[2]));
+        self.nodes.push(new Node(NODE_TYPE.CONNECT, parseInt(elemData[1], 10), parseInt(elemData[2], 10)));
         break;
 
       // Block
       case 'B':
-        self.blocks.push(new Block(elemData[1], elemData[2], elemData[3], elemData[4]));
+        self.blocks.push(new Block(parseInt(elemData[1], 10), parseInt(elemData[2], 10), parseInt(elemData[3], 10), parseInt(elemData[4], 10)));
         break;
     }
 
@@ -215,6 +215,7 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
       if(block.contains(mouseX, mouseY) || block.contains(reverseMouseX, reverseMouseY)) {
         game.resetLine();
       }
+
     });
 
     // Activate all nodes that the user is touching
@@ -223,7 +224,7 @@ Game.prototype.handleMouseMove = function(game, mouseEvent)
       if(game.activeNodes[i]) {
         return;
       }
-      
+
       if(node.contains(mouseX, mouseY) || node.contains(reverseMouseX, reverseMouseY)) {
         game.activeNodes[i] = true;
       }
