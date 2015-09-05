@@ -3,7 +3,6 @@
 ## Saturday (9/5)
 
 * Add chat mechanic
-  * Display messages based on condition (console)
   * Add a reply mechanic (using keyboard key)
   * Display messages onscreen
   * Display reply mechanic onscreen

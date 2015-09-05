@@ -22,6 +22,10 @@ function Game(canvas)
 
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
+  this.replyTimerMax = 10;
+  this.replyTimer = 0;
+  this.replyCount = 0;
+  this.hasReplied = false;
 }
 
 Game.prototype.resetStage = function()
@@ -38,6 +42,8 @@ Game.prototype.resetStage = function()
 
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
+  this.replyTimer = 0;
+  this.hasReplied = false;
 }
 
 Game.prototype.advanceStage = function()
@@ -87,6 +93,11 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
+  if(!this.isMouseDown)
+  {
+    this.replyTimer = 0;
+  }
+
   // Display chat messages
   var levelMessages = messages[this.currentStage];
 
@@ -98,10 +109,28 @@ Game.prototype.update = function()
 
   var currMessage = levelMessages[this.currentMessageIndex];
 
-  if(currMessage.condition && !currMessage.condition())
+  if(currMessage.condition && !currMessage.condition(game))
   {
     // Condition to display message hasn't been met, skip the message
     this.currentMessageIndex++;
+    return;
+  }
+
+  var prevMessage = levelMessages[this.currentMessageIndex - 1];
+
+  if(prevMessage && prevMessage.awaitReply && !this.hasReplied)
+  {
+    if(this.isMouseDown)
+    {
+      this.replyTimer++;
+    }
+
+    if(this.replyTimer > this.replyTimerMax)
+    {
+      this.replyCount++;
+      this.hasReplied = true;
+      console.log('You replied!');
+    }
   }
 
   if(!currMessage.delay || this.messageTimer >= currMessage.delay)
@@ -110,6 +139,7 @@ Game.prototype.update = function()
     console.log(currMessage.content);
     this.messageTimer = 0;
     this.currentMessageIndex++;
+    this.hasReplied = false;
   }
   else
   {
