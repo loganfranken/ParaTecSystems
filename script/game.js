@@ -21,6 +21,7 @@ function Game(canvas)
   this.loadStage(this.currentStage);
 
   this.currentMessageIndex = 0;
+  this.messageTimer = 0;
 }
 
 Game.prototype.resetStage = function()
@@ -34,7 +35,9 @@ Game.prototype.resetStage = function()
   this.endNode = null;
 
   this.blocks = [];
+
   this.currentMessageIndex = 0;
+  this.messageTimer = 0;
 }
 
 Game.prototype.advanceStage = function()
@@ -93,8 +96,20 @@ Game.prototype.update = function()
     return;
   }
 
-  console.log(levelMessages[this.currentMessageIndex].content);
-  this.currentMessageIndex++;
+  var currMessage = levelMessages[this.currentMessageIndex];
+
+  if(!currMessage.delay || this.messageTimer >= currMessage.delay)
+  {
+    // Display the message
+    console.log(currMessage.content);
+    this.messageTimer = 0;
+    this.currentMessageIndex++;
+  }
+  else
+  {
+    this.messageTimer++;
+  }
+
 }
 
 Game.prototype.draw = function()
