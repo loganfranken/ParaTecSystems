@@ -19,6 +19,8 @@ function Game(canvas)
 
   this.currentStage = 0;
   this.loadStage(this.currentStage);
+
+  this.displayedLevelMessage = false;
 }
 
 Game.prototype.resetStage = function()
@@ -32,6 +34,7 @@ Game.prototype.resetStage = function()
   this.endNode = null;
 
   this.blocks = [];
+  this.displayedLevelMessage = false;
 }
 
 Game.prototype.advanceStage = function()
@@ -81,6 +84,11 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
+  if(!this.displayedLevelMessage)
+  {
+    console.log(messages[this.currentStage][0].content);
+    this.displayedLevelMessage = true;
+  }
 }
 
 Game.prototype.draw = function()
