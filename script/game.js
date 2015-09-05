@@ -20,7 +20,7 @@ function Game(canvas)
   this.currentStage = 0;
   this.loadStage(this.currentStage);
 
-  this.displayedLevelMessage = false;
+  this.currentMessageIndex = 0;
 }
 
 Game.prototype.resetStage = function()
@@ -34,7 +34,7 @@ Game.prototype.resetStage = function()
   this.endNode = null;
 
   this.blocks = [];
-  this.displayedLevelMessage = false;
+  this.currentMessageIndex = 0;
 }
 
 Game.prototype.advanceStage = function()
@@ -84,11 +84,17 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
-  if(!this.displayedLevelMessage)
+  // Display chat messages
+  var levelMessages = messages[this.currentStage];
+
+  if(this.currentMessageIndex >= levelMessages.length)
   {
-    console.log(messages[this.currentStage][0].content);
-    this.displayedLevelMessage = true;
+    // All of the messages for this stage have been displayed
+    return;
   }
+
+  console.log(levelMessages[this.currentMessageIndex].content);
+  this.currentMessageIndex++;
 }
 
 Game.prototype.draw = function()
