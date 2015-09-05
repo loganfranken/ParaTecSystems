@@ -20,11 +20,16 @@ function Game(canvas)
   this.currentStage = 0;
   this.loadStage(this.currentStage);
 
+  this.displayMessage = null;
+  this.displayMessageOffset = 0;
+
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
+
   this.replyTimerMax = 10;
   this.replyTimer = 0;
   this.replyCount = 0;
+
   this.hasReplied = false;
 }
 
@@ -136,7 +141,7 @@ Game.prototype.update = function()
   if(!currMessage.delay || this.messageTimer >= currMessage.delay)
   {
     // Display the message
-    console.log(currMessage.content);
+    this.displayMessage = currMessage.content;
     this.messageTimer = 0;
     this.currentMessageIndex++;
     this.hasReplied = false;
@@ -170,6 +175,14 @@ Game.prototype.draw = function()
   // Draw the chat sidebar
   context.fillStyle = '#111';
   context.fillRect(this.canvasWidth - 200, 0, 200, this.canvasHeight);
+
+  if(this.displayMessage)
+  {
+    context.fillStyle = '#FFF';
+    context.fillText(this.displayMessage, this.canvasWidth - 200, this.displayMessageOffset);
+    this.displayMessage = null;
+    this.displayMessageOffset += 10;
+  }
 
   // Draw the nodes
   this.nodes.forEach(function(node, i) {

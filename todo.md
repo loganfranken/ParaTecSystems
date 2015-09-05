@@ -3,7 +3,6 @@
 ## Saturday (9/5)
 
 * Add chat mechanic
-  * Add a reply mechanic (using keyboard key)
   * Display messages onscreen
   * Display reply mechanic onscreen
 * Make size of canvas relative to browser size
