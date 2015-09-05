@@ -96,11 +96,15 @@ Game.prototype.draw = function()
 
   // Draw the top half
   context.fillStyle = '#FFF';
-  context.fillRect(0, 0, this.canvasWidth, halfCanvasHeight);
+  context.fillRect(0, 0, this.canvasWidth - 200, halfCanvasHeight);
 
   // Draw the bottom half
   context.fillStyle = '#333';
-  context.fillRect(0, halfCanvasHeight, this.canvasWidth, halfCanvasHeight);
+  context.fillRect(0, halfCanvasHeight, this.canvasWidth - 200, halfCanvasHeight);
+
+  // Draw the chat sidebar
+  context.fillStyle = '#111';
+  context.fillRect(this.canvasWidth - 200, 0, 200, this.canvasHeight);
 
   // Draw the nodes
   this.nodes.forEach(function(node, i) {
