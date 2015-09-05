@@ -3,7 +3,6 @@
 ## Saturday (9/5)
 
 * Add chat mechanic
-  * Display multiple messages for each level w/ delay (console)
   * Display messages based on condition (console)
   * Add a reply mechanic (using keyboard key)
   * Display messages onscreen

@@ -98,6 +98,12 @@ Game.prototype.update = function()
 
   var currMessage = levelMessages[this.currentMessageIndex];
 
+  if(currMessage.condition && !currMessage.condition())
+  {
+    // Condition to display message hasn't been met, skip the message
+    this.currentMessageIndex++;
+  }
+
   if(!currMessage.delay || this.messageTimer >= currMessage.delay)
   {
     // Display the message
