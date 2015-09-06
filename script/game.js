@@ -1,3 +1,11 @@
+var GAME_STATE = {
+
+  START: 0,
+  PAUSE: 1,
+  PLAYING: 2
+
+};
+
 function Game(canvas)
 {
   this.canvas = canvas;
@@ -35,6 +43,8 @@ function Game(canvas)
 
   this.currentScore = 0;
   this.totalScore = 0;
+
+  this.currentState = GAME_STATE.START;
 }
 
 Game.prototype.resetStage = function()
@@ -105,6 +115,11 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
+  if(this.currentState != GAME_STATE.PLAYING)
+  {
+    return;
+  }
+
   this.currentScore--;
 
   if(!this.isReplyButtonDown)
@@ -166,6 +181,32 @@ Game.prototype.draw = function()
 {
   var self = this;
   var context = this.context;
+
+  // DRAW: Start Screen
+  if(this.currentState === GAME_STATE.START)
+  {
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    context.fillStyle = '#FFF';
+    context.fillText('GAME TITLE', 100, 100);
+
+    return;
+  }
+
+  // DRAW: Pause Screen
+  if(this.currentState === GAME_STATE.PAUSE)
+  {
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    context.fillStyle = '#FFF';
+    context.fillText('PAUSED', 100, 100);
+
+    return;
+  }
+
+  // DRAW: Playing
 
   // Clear the canvas
   context.fillStyle = '#FFF';
@@ -255,6 +296,7 @@ Game.prototype.start = function()
   self.canvas.addEventListener('mousedown', function(mouseEvent) { self.handleMouseDown(self, mouseEvent) }, false);
   self.canvas.addEventListener('mouseup', function(mouseEvent) { self.handleMouseUp(self, mouseEvent) }, false);
   self.canvas.addEventListener('mousemove', function(mouseEvent) { self.handleMouseMove(self, mouseEvent) }, false);
+  self.canvas.addEventListener('click', function(mouseEvent) { self.handleMouseClick(self, mouseEvent) }, false);
 
   document.getElementById('reply-button').addEventListener('mousedown', function(mouseEvent) { self.handleReplyButtonMouseDown(self, mouseEvent) }, false);
   document.getElementById('reply-button').addEventListener('mouseup', function(mouseEvent) { self.handleReplyButtonMouseUp(self, mouseEvent) }, false);
@@ -275,6 +317,14 @@ Game.prototype.resetLine = function()
 {
   this.linePoints = [];
   this.activeNodes = [];
+}
+
+Game.prototype.handleMouseClick = function(game, mouseEvent)
+{
+  if(game.currentState === GAME_STATE.START || game.currentState === GAME_STATE.PAUSE)
+  {
+    game.currentState = GAME_STATE.PLAYING;
+  }
 }
 
 Game.prototype.handleMouseUp = function(game, mouseEvent)

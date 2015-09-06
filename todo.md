@@ -2,7 +2,6 @@
 
 ## Saturday (9/5)
 
-* Add scoring mechanic
 * Add start screen
 * Add stop screen
 * Add interstitial screens
