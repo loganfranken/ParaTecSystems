@@ -1,44 +1,56 @@
+/**
+ * The game
+ * @constructor
+ * @param {HTMLCanvasElement} canvas  - Canvas for displaying the game
+ */
 function Game(canvas)
 {
+  // Properties: Canvas
   this.canvas = canvas;
   this.context = canvas.getContext("2d");
-
   this.canvasWidth = canvas.width;
   this.canvasHeight = canvas.height;
 
+  // Properties: Game
+  this.currentState = GameState.Starting;
+
+  // Properties: User Mouse
   this.isMouseDown = false;
 
+  // Properties: Line
   this.linePoints = [];
 
+  // Properties: Nodes
   this.nodes = [];
   this.activeNodes = [];
   this.startNode = null;
   this.endNode = null;
 
+  // Properties: Blocks
   this.blocks = [];
 
+  // Properties: Stages
   this.currentStage = 0;
   this.loadStage(this.currentStage);
+  this.stageIntroTimer = 0;
 
+  // Properties: Messages
   this.displayMessage = null;
   this.displayMessageOffset = 0;
-
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
 
+  // Properties: Message Replies
   this.replyTimerMax = 10;
   this.replyTimer = 0;
   this.replyCount = 0;
-
   this.hasReplied = false;
   this.isReplyButtonDown = false;
 
+  // Properties: Score
   this.currentScore = 0;
   this.totalScore = 0;
 
-  this.currentState = GameState.Starting;
-
-  this.levelIntroTimer = 0;
 }
 
 Game.prototype.resetStage = function()
@@ -66,7 +78,7 @@ Game.prototype.advanceStage = function()
   this.currentStage++;
   this.loadStage(this.currentStage);
   this.currentState = GameState.StartingStage;
-  this.levelIntroTimer = 20;
+  this.stageIntroTimer = 20;
 }
 
 Game.prototype.loadStage = function(index)
@@ -130,13 +142,13 @@ Game.prototype.update = function()
 {
   if(this.currentState === GameState.StartingStage)
   {
-    if(this.levelIntroTimer <= 0)
+    if(this.stageIntroTimer <= 0)
     {
       this.currentState = GameState.Playing;
       return;
     }
 
-    this.levelIntroTimer--;
+    this.stageIntroTimer--;
     return;
   }
 
@@ -362,7 +374,7 @@ Game.prototype.handleMouseClick = function(game, mouseEvent)
 {
   if(game.currentState === GameState.Starting)
   {
-    this.levelIntroTimer = 20;
+    this.stageIntroTimer = 20;
     game.currentState = GameState.StartingStage;
     return;
   }
