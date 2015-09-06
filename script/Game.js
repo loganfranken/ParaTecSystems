@@ -99,7 +99,7 @@ Game.prototype.loadStage = function(index)
         var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
         var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
 
-        self.startNode = new Node(NODE_TYPE.START, x, y);
+        self.startNode = new Node(NodeType.Start, x, y, nodeRadius);
         self.nodes.push(self.startNode);
         break;
 
@@ -108,7 +108,7 @@ Game.prototype.loadStage = function(index)
         var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
         var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
 
-        self.endNode = new Node(NODE_TYPE.END, x, y);
+        self.endNode = new Node(NodeType.End, x, y, nodeRadius);
         self.nodes.push(self.endNode);
         break;
 
@@ -117,7 +117,7 @@ Game.prototype.loadStage = function(index)
         var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
         var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
 
-        self.nodes.push(new Node(NODE_TYPE.CONNECT, x, y));
+        self.nodes.push(new Node(NodeType.Connect, x, y, nodeRadius));
         break;
 
       // Block
