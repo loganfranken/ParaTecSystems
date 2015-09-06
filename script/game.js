@@ -2,7 +2,8 @@ var GAME_STATE = {
 
   START: 0,
   PAUSE: 1,
-  PLAYING: 2
+  PLAYING: 2,
+  LEVEL_INTRO: 3
 
 };
 
@@ -45,6 +46,8 @@ function Game(canvas)
   this.totalScore = 0;
 
   this.currentState = GAME_STATE.START;
+
+  this.levelIntroTimer = 0;
 }
 
 Game.prototype.resetStage = function()
@@ -71,6 +74,8 @@ Game.prototype.advanceStage = function()
   this.resetStage();
   this.currentStage++;
   this.loadStage(this.currentStage);
+  this.currentState = GAME_STATE.LEVEL_INTRO;
+  this.levelIntroTimer = 20;
 }
 
 Game.prototype.loadStage = function(index)
@@ -115,6 +120,18 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
+  if(this.currentState === GAME_STATE.LEVEL_INTRO)
+  {
+    if(this.levelIntroTimer <= 0)
+    {
+      this.currentState = GAME_STATE.PLAYING;
+      return;
+    }
+
+    this.levelIntroTimer--;
+    return;
+  }
+
   if(this.currentState != GAME_STATE.PLAYING)
   {
     return;
@@ -202,6 +219,18 @@ Game.prototype.draw = function()
 
     context.fillStyle = '#FFF';
     context.fillText('PAUSED', 100, 100);
+
+    return;
+  }
+
+  // DRAW: Level Interstitial
+  if(this.currentState === GAME_STATE.LEVEL_INTRO)
+  {
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+    context.fillStyle = '#FFF';
+    context.fillText('STARTING A LEVEL', 100, 100);
 
     return;
   }
@@ -323,9 +352,17 @@ Game.prototype.resetLine = function()
 
 Game.prototype.handleMouseClick = function(game, mouseEvent)
 {
-  if(game.currentState === GAME_STATE.START || game.currentState === GAME_STATE.PAUSE)
+  if(game.currentState === GAME_STATE.START)
+  {
+    this.levelIntroTimer = 20;
+    game.currentState = GAME_STATE.LEVEL_INTRO;
+    return;
+  }
+
+  if(game.currentState === GAME_STATE.PAUSE)
   {
     game.currentState = GAME_STATE.PLAYING;
+    return;
   }
 }
 

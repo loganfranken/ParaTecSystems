@@ -2,8 +2,6 @@
 
 ## Saturday (9/5)
 
-* Add start screen
-* Add stop screen
 * Add interstitial screens
 * Make size of canvas relative to browser size
 * Organize, refactor, clean up
