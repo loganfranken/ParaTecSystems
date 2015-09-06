@@ -301,6 +301,8 @@ Game.prototype.start = function()
   document.getElementById('reply-button').addEventListener('mousedown', function(mouseEvent) { self.handleReplyButtonMouseDown(self, mouseEvent) }, false);
   document.getElementById('reply-button').addEventListener('mouseup', function(mouseEvent) { self.handleReplyButtonMouseUp(self, mouseEvent) }, false);
 
+  document.getElementById('pause-button').addEventListener('click', function(mouseEvent) { self.handlePauseButtonClick(self, mouseEvent) }, false);
+
   function loop()
   {
     self.update();
@@ -346,6 +348,18 @@ Game.prototype.handleReplyButtonMouseUp = function(game, mouseEvent)
 Game.prototype.handleReplyButtonMouseDown = function(game, mouseEvent)
 {
   game.isReplyButtonDown = true;
+}
+
+Game.prototype.handlePauseButtonClick = function(game, mouseEvent)
+{
+  if(game.currentState === GAME_STATE.PAUSE)
+  {
+    game.currentState = GAME_STATE.PLAYING;
+  }
+  else
+  {
+    game.currentState = GAME_STATE.PAUSE;
+  }
 }
 
 Game.prototype.handleMouseMove = function(game, mouseEvent)
