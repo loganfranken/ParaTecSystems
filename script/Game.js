@@ -85,12 +85,18 @@ Game.prototype.resetLine = function()
   this.activeNodes = [];
 }
 
+/**
+ * Advances the user to the next stage
+ */
 Game.prototype.advanceStage = function()
 {
   this.totalScore += this.currentScore;
+
   this.resetStage();
+
   this.currentStage++;
   this.loadStage(this.currentStage);
+
   this.currentState = GameState.StartingStage;
   this.stageIntroTimer = 20;
 }
