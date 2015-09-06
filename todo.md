@@ -2,6 +2,7 @@
 
 ## Sunday (9/6)
 
+* Finish refactoring
 * Create stages 2, 3, 4, 5, 6, 7
 * Visual work
 

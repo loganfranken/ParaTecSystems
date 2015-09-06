@@ -159,7 +159,7 @@ Game.prototype.loadStage = function(index)
 }
 
 /**
- * Updates the game's states
+ * Updates the game's state
  */
 Game.prototype.update = function()
 {
@@ -189,6 +189,9 @@ Game.prototype.update = function()
 
 }
 
+/**
+ * Updates the state of messages within the game
+ */
 Game.prototype.updateMessages = function()
 {
   if(!this.isReplyOptionActive)
@@ -250,6 +253,9 @@ Game.prototype.updateMessages = function()
   this.messageTimer++;
 }
 
+/**
+ * Draws the game
+ */
 Game.prototype.draw = function()
 {
   var self = this;
