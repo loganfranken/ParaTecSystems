@@ -50,25 +50,39 @@ function Game(canvas)
   // Properties: Score
   this.currentScore = 0;
   this.totalScore = 0;
-
 }
 
+/**
+ * Resets the game to a state before a stage begins
+ */
 Game.prototype.resetStage = function()
 {
+  // Reset lines
   this.resetLine();
 
+  // Reset nodes
   this.nodes = [];
   this.activeNodes = [];
-
   this.startNode = null;
   this.endNode = null;
 
+  // Reset blocks
   this.blocks = [];
 
+  // Reset messages
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
   this.replyTimer = 0;
   this.hasReplied = false;
+}
+
+/**
+ * Resets a line to a state before it was drawn
+ */
+Game.prototype.resetLine = function()
+{
+  this.linePoints = [];
+  this.activeNodes = [];
 }
 
 Game.prototype.advanceStage = function()
@@ -362,12 +376,6 @@ Game.prototype.start = function()
 
   window.setInterval(loop, 50);
   loop();
-}
-
-Game.prototype.resetLine = function()
-{
-  this.linePoints = [];
-  this.activeNodes = [];
 }
 
 Game.prototype.handleMouseClick = function(game, mouseEvent)
