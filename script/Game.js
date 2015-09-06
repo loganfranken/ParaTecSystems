@@ -1,12 +1,3 @@
-var GAME_STATE = {
-
-  START: 0,
-  PAUSE: 1,
-  PLAYING: 2,
-  LEVEL_INTRO: 3
-
-};
-
 function Game(canvas)
 {
   this.canvas = canvas;
@@ -45,7 +36,7 @@ function Game(canvas)
   this.currentScore = 0;
   this.totalScore = 0;
 
-  this.currentState = GAME_STATE.START;
+  this.currentState = GameState.Starting;
 
   this.levelIntroTimer = 0;
 }
@@ -74,7 +65,7 @@ Game.prototype.advanceStage = function()
   this.resetStage();
   this.currentStage++;
   this.loadStage(this.currentStage);
-  this.currentState = GAME_STATE.LEVEL_INTRO;
+  this.currentState = GameState.StartingStage;
   this.levelIntroTimer = 20;
 }
 
@@ -137,11 +128,11 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
-  if(this.currentState === GAME_STATE.LEVEL_INTRO)
+  if(this.currentState === GameState.StartingStage)
   {
     if(this.levelIntroTimer <= 0)
     {
-      this.currentState = GAME_STATE.PLAYING;
+      this.currentState = GameState.Playing;
       return;
     }
 
@@ -149,7 +140,7 @@ Game.prototype.update = function()
     return;
   }
 
-  if(this.currentState != GAME_STATE.PLAYING)
+  if(this.currentState != GameState.Playing)
   {
     return;
   }
@@ -217,7 +208,7 @@ Game.prototype.draw = function()
   var context = this.context;
 
   // DRAW: Start Screen
-  if(this.currentState === GAME_STATE.START)
+  if(this.currentState === GameState.Starting)
   {
     context.fillStyle = '#000';
     context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -229,7 +220,7 @@ Game.prototype.draw = function()
   }
 
   // DRAW: Pause Screen
-  if(this.currentState === GAME_STATE.PAUSE)
+  if(this.currentState === GameState.Paused)
   {
     context.fillStyle = '#000';
     context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -241,7 +232,7 @@ Game.prototype.draw = function()
   }
 
   // DRAW: Level Interstitial
-  if(this.currentState === GAME_STATE.LEVEL_INTRO)
+  if(this.currentState === GameState.StartingStage)
   {
     context.fillStyle = '#000';
     context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
@@ -369,16 +360,16 @@ Game.prototype.resetLine = function()
 
 Game.prototype.handleMouseClick = function(game, mouseEvent)
 {
-  if(game.currentState === GAME_STATE.START)
+  if(game.currentState === GameState.Starting)
   {
     this.levelIntroTimer = 20;
-    game.currentState = GAME_STATE.LEVEL_INTRO;
+    game.currentState = GameState.StartingStage;
     return;
   }
 
-  if(game.currentState === GAME_STATE.PAUSE)
+  if(game.currentState === GameState.Paused)
   {
-    game.currentState = GAME_STATE.PLAYING;
+    game.currentState = GameState.Playing;
     return;
   }
 }
@@ -406,13 +397,13 @@ Game.prototype.handleReplyButtonMouseDown = function(game, mouseEvent)
 
 Game.prototype.handlePauseButtonClick = function(game, mouseEvent)
 {
-  if(game.currentState === GAME_STATE.PAUSE)
+  if(game.currentState === GameState.Paused)
   {
-    game.currentState = GAME_STATE.PLAYING;
+    game.currentState = GameState.Playing;
   }
   else
   {
-    game.currentState = GAME_STATE.PAUSE;
+    game.currentState = GameState.Paused;
   }
 }
 
