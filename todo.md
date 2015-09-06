@@ -2,7 +2,6 @@
 
 ## Saturday (9/5)
 
-* Add interstitial screens
 * Make size of canvas relative to browser size
 * Organize, refactor, clean up
 

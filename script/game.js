@@ -12,15 +12,15 @@ function Game(canvas)
   this.canvas = canvas;
   this.context = canvas.getContext("2d");
 
-  this.isMouseDown = false;
-  this.linePoints = [];
-
   this.canvasWidth = canvas.width;
   this.canvasHeight = canvas.height;
 
+  this.isMouseDown = false;
+
+  this.linePoints = [];
+
   this.nodes = [];
   this.activeNodes = [];
-
   this.startNode = null;
   this.endNode = null;
 
@@ -94,24 +94,39 @@ Game.prototype.loadStage = function(index)
     {
       // Start Node
       case 'S':
-        self.startNode = new Node(NODE_TYPE.START, parseInt(elemData[1], 10), parseInt(elemData[2], 10));
+        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
+        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
+
+        self.startNode = new Node(NODE_TYPE.START, x, y);
         self.nodes.push(self.startNode);
         break;
 
       // End Node
       case 'E':
-        self.endNode = new Node(NODE_TYPE.END, parseInt(elemData[1], 10), parseInt(elemData[2], 10));
+        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
+        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
+
+        self.endNode = new Node(NODE_TYPE.END, x, y);
         self.nodes.push(self.endNode);
         break;
 
       // Connecting Node
       case 'C':
-        self.nodes.push(new Node(NODE_TYPE.CONNECT, parseInt(elemData[1], 10), parseInt(elemData[2], 10)));
+        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
+        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
+
+        self.nodes.push(new Node(NODE_TYPE.CONNECT, x, y));
         break;
 
       // Block
       case 'B':
-        self.blocks.push(new Block(parseInt(elemData[1], 10), parseInt(elemData[2], 10), parseInt(elemData[3], 10), parseInt(elemData[4], 10)));
+        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
+        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
+
+        var width = (parseInt(elemData[3], 10)/100) * self.canvasWidth;
+        var height = (parseInt(elemData[4], 10)/100) * self.canvasHeight;
+
+        self.blocks.push(new Block(x, y, width, height));
         break;
     }
 
