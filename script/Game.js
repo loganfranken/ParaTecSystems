@@ -398,6 +398,9 @@ Game.prototype.drawUserLine = function(isReflected)
   context.stroke();
 }
 
+/**
+ * Starts the game
+ */
 Game.prototype.start = function()
 {
   var self = this;
