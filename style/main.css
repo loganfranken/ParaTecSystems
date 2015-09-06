@@ -9,3 +9,9 @@ canvas
 {
   background: #FFF;
 }
+
+#chat-sidebar
+{
+  color: #FFF;
+  float: right;
+}

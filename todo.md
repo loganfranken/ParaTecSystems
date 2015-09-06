@@ -3,7 +3,6 @@
 ## Saturday (9/5)
 
 * Add chat mechanic
-  * Display messages onscreen
   * Display reply mechanic onscreen
 * Make size of canvas relative to browser size
 * Organize, refactor, clean up

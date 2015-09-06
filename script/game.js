@@ -178,10 +178,8 @@ Game.prototype.draw = function()
 
   if(this.displayMessage)
   {
-    context.fillStyle = '#FFF';
-    context.fillText(this.displayMessage, this.canvasWidth - 200, this.displayMessageOffset);
+    document.getElementById('chat-sidebar').innerHTML += this.displayMessage;
     this.displayMessage = null;
-    this.displayMessageOffset += 10;
   }
 
   // Draw the nodes
