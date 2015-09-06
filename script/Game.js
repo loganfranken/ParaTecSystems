@@ -25,6 +25,7 @@ function Game(canvas)
   this.activeNodes = [];
   this.startNode = null;
   this.endNode = null;
+  this.nodeRadius = this.canvasWidth * GameSettings.NodeRadiusPercentage;
 
   // Properties: Blocks
   this.blocks = [];
@@ -41,7 +42,7 @@ function Game(canvas)
   this.messageTimer = 0;
 
   // Properties: Message Replies
-  this.replyTimerMax = 10;
+  this.replyTimerMax = GameSettings.ReplyTimerMax;
   this.replyTimer = 0;
   this.replyCount = 0;
   this.hasReplied = false;
@@ -74,6 +75,9 @@ Game.prototype.resetStage = function()
   this.messageTimer = 0;
   this.replyTimer = 0;
   this.hasReplied = false;
+
+  // Reset score
+  this.currentScore = GameSettings.StageScoreStart;
 }
 
 /**
@@ -98,58 +102,54 @@ Game.prototype.advanceStage = function()
   this.loadStage(this.currentStage);
 
   this.currentState = GameState.StartingStage;
-  this.stageIntroTimer = 20;
+  this.stageIntroTimer = GameSettings.StageIntroTimerMax;
 }
 
+/**
+ * Loads the stage corresponding to the specified index
+ * @param {integer} index  - Index of the stage to load
+ */
 Game.prototype.loadStage = function(index)
 {
-  this.currentScore = 1000;
+  function calcRelativeValue(percentage, context) {
+    return (parseInt(percentage, 10)/100) * context;
+  }
 
   var self = this;
   var stageData = stages[index];
   var stageElements = stageData.split(';');
 
-  var nodeRadius = self.canvasWidth * GameSettings.NodeRadiusPercentage;
-
   stageElements.forEach(function(elem, i) {
 
     var elemData = elem.split(/[,\(\)]/);
 
-    switch(elemData[0])
+    var key = elemData[0];
+    var x = calcRelativeValue(elemData[1], self.canvasWidth);
+    var y = calcRelativeValue(elemData[2], self.canvasHeight);
+
+    switch(key)
     {
       // Start Node
       case 'S':
-        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
-        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
-
-        self.startNode = new Node(NodeType.Start, x, y, nodeRadius);
+        self.startNode = new Node(NodeType.Start, x, y, self.nodeRadius);
         self.nodes.push(self.startNode);
         break;
 
       // End Node
       case 'E':
-        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
-        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
-
-        self.endNode = new Node(NodeType.End, x, y, nodeRadius);
+        self.endNode = new Node(NodeType.End, x, y, self.nodeRadius);
         self.nodes.push(self.endNode);
         break;
 
       // Connecting Node
       case 'C':
-        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
-        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
-
-        self.nodes.push(new Node(NodeType.Connect, x, y, nodeRadius));
+        self.nodes.push(new Node(NodeType.Connect, x, y, self.nodeRadius));
         break;
 
       // Block
       case 'B':
-        var x = (parseInt(elemData[1], 10)/100) * self.canvasWidth;
-        var y = (parseInt(elemData[2], 10)/100) * self.canvasHeight;
-
-        var width = (parseInt(elemData[3], 10)/100) * self.canvasWidth;
-        var height = (parseInt(elemData[4], 10)/100) * self.canvasHeight;
+        var width = calcRelativeValue(elemData[3], self.canvasWidth);
+        var height = calcRelativeValue(elemData[4], self.canvasHeight);
 
         self.blocks.push(new Block(x, y, width, height));
         break;
