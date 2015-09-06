@@ -32,6 +32,9 @@ function Game(canvas)
 
   this.hasReplied = false;
   this.isReplyButtonDown = false;
+
+  this.currentScore = 0;
+  this.totalScore = 0;
 }
 
 Game.prototype.resetStage = function()
@@ -54,6 +57,7 @@ Game.prototype.resetStage = function()
 
 Game.prototype.advanceStage = function()
 {
+  this.totalScore += this.currentScore;
   this.resetStage();
   this.currentStage++;
   this.loadStage(this.currentStage);
@@ -61,6 +65,8 @@ Game.prototype.advanceStage = function()
 
 Game.prototype.loadStage = function(index)
 {
+  this.currentScore = 1000;
+
   var self = this;
   var stageData = stages[index];
   var stageElements = stageData.split(';');
@@ -99,6 +105,8 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
+  this.currentScore--;
+
   if(!this.isReplyButtonDown)
   {
     this.replyTimer = 0;
@@ -167,15 +175,16 @@ Game.prototype.draw = function()
 
   // Draw the top half
   context.fillStyle = '#FFF';
-  context.fillRect(0, 0, this.canvasWidth - 200, halfCanvasHeight);
+  context.fillRect(0, 0, this.canvasWidth, halfCanvasHeight);
 
   // Draw the bottom half
   context.fillStyle = '#333';
-  context.fillRect(0, halfCanvasHeight, this.canvasWidth - 200, halfCanvasHeight);
+  context.fillRect(0, halfCanvasHeight, this.canvasWidth, halfCanvasHeight);
 
-  // Draw the chat sidebar
-  context.fillStyle = '#111';
-  context.fillRect(this.canvasWidth - 200, 0, 200, this.canvasHeight);
+  // Score
+  context.fillStyle = '#000';
+  context.fillText("TOTAL SCORE: " + this.totalScore, 10, 20);
+  context.fillText("STAGE SCORE: " + this.currentScore, 10, 40);
 
   if(this.displayMessage)
   {
@@ -255,6 +264,8 @@ Game.prototype.start = function()
     self.update();
     self.draw();
   }
+
+  this.currentScore = 1000;
 
   window.setInterval(loop, 50);
   loop();
