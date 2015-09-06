@@ -86,6 +86,8 @@ Game.prototype.loadStage = function(index)
   var stageData = stages[index];
   var stageElements = stageData.split(';');
 
+  var nodeRadius = self.canvasWidth * GameSettings.NodeRadiusPercentage;
+
   stageElements.forEach(function(elem, i) {
 
     var elemData = elem.split(/[,\(\)]/);

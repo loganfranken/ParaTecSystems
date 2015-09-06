@@ -1,35 +1,42 @@
-var NODE_TYPE = {
-  START: 0,
-  END: 1,
-  CONNECT: 2
-};
-
-function Node(nodeType, x, y) {
+/**
+ * A block that prevents
+ * @constructor
+ * @param {NodeType}  nodeType  - The node's type
+ * @param {integer}   x         - X-coordinate of the block
+ * @param {integer}   y         - Y-cooridnate of the block
+ * @param {integer}   radius    - Radius of the node
+ */
+function Node(nodeType, x, y, radius) {
 
   this.type = nodeType;
 
   this.x = x;
   this.y = y;
 
-  this.radius = 20;
+  this.radius = radius;
   this.radiusSquared = (this.radius * this.radius);
 
 }
 
-// Draws the node to a given canvas context
+/**
+ * Renders the node
+ * @param {CanvasRenderingContext2D}  context - 2D rendering context to use when rendering the node
+ */
 Node.prototype.draw = function(context) {
 
-  if(this.type === NODE_TYPE.START)
+  switch(this.type)
   {
-    context.fillStyle = 'green';
-  }
-  else if(this.type === NODE_TYPE.END)
-  {
-    context.fillStyle = 'red';
-  }
-  else if(this.type === NODE_TYPE.CONNECT)
-  {
-    context.fillStyle = 'blue';
+    case NodeType.Start:
+      context.fillStyle = GameSettings.NodeStartFillStyle;
+      break;
+
+    case NodeType.End:
+      context.fillStyle = GameSettings.NodeEndFillStyle;
+      break;
+
+    case NodeType.Connect:
+      context.fillStyle = GameSettings.NodeConnectFillStyle;
+      break;
   }
 
   context.beginPath();
@@ -38,7 +45,11 @@ Node.prototype.draw = function(context) {
 
 };
 
-// Determines if a given (x, y) coordinate is located within the Node
+/**
+ * Determines if a given point is within the node
+ * @param {integer} x       - X-coordinate of the point
+ * @param {integer} y       - Y-cooridnate of the point
+ */
 Node.prototype.contains = function(x, y) {
 
   // Source: http://stackoverflow.com/questions/481144/equation-for-testing-if-a-point-is-inside-a-circle

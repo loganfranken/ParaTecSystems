@@ -28,7 +28,7 @@ function Block(x, y, width, height) {
  */
 Block.prototype.draw = function(context) {
 
-  context.fillStyle = '#000';
+  context.fillStyle = GameSettings.BlockFillStyle;
   context.fillRect(this.x, this.y, this.width, this.height);
 
 };
