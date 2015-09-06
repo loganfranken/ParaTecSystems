@@ -1,10 +1,5 @@
 # TODO
 
-## Saturday (9/5)
-
-* Make size of canvas relative to browser size
-* Organize, refactor, clean up
-
 ## Sunday (9/6)
 
 * Create stages 2, 3, 4, 5, 6, 7
