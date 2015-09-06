@@ -31,6 +31,7 @@ function Game(canvas)
   this.replyCount = 0;
 
   this.hasReplied = false;
+  this.isReplyButtonDown = false;
 }
 
 Game.prototype.resetStage = function()
@@ -98,7 +99,7 @@ Game.prototype.loadStage = function(index)
 
 Game.prototype.update = function()
 {
-  if(!this.isMouseDown)
+  if(!this.isReplyButtonDown)
   {
     this.replyTimer = 0;
   }
@@ -125,7 +126,7 @@ Game.prototype.update = function()
 
   if(prevMessage && prevMessage.awaitReply && !this.hasReplied)
   {
-    if(this.isMouseDown)
+    if(this.isReplyButtonDown)
     {
       this.replyTimer++;
     }
@@ -246,6 +247,9 @@ Game.prototype.start = function()
   self.canvas.addEventListener('mouseup', function(mouseEvent) { self.handleMouseUp(self, mouseEvent) }, false);
   self.canvas.addEventListener('mousemove', function(mouseEvent) { self.handleMouseMove(self, mouseEvent) }, false);
 
+  document.getElementById('reply-button').addEventListener('mousedown', function(mouseEvent) { self.handleReplyButtonMouseDown(self, mouseEvent) }, false);
+  document.getElementById('reply-button').addEventListener('mouseup', function(mouseEvent) { self.handleReplyButtonMouseUp(self, mouseEvent) }, false);
+
   function loop()
   {
     self.update();
@@ -271,6 +275,16 @@ Game.prototype.handleMouseUp = function(game, mouseEvent)
 Game.prototype.handleMouseDown = function(game, mouseEvent)
 {
   game.isMouseDown = true;
+}
+
+Game.prototype.handleReplyButtonMouseUp = function(game, mouseEvent)
+{
+  game.isReplyButtonDown = false;
+}
+
+Game.prototype.handleReplyButtonMouseDown = function(game, mouseEvent)
+{
+  game.isReplyButtonDown = true;
 }
 
 Game.prototype.handleMouseMove = function(game, mouseEvent)

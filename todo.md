@@ -2,14 +2,12 @@
 
 ## Saturday (9/5)
 
-* Add chat mechanic
-  * Display reply mechanic onscreen
-* Make size of canvas relative to browser size
-* Organize, refactor, clean up
 * Add scoring mechanic
 * Add start screen
 * Add stop screen
 * Add interstitial screens
+* Make size of canvas relative to browser size
+* Organize, refactor, clean up
 
 ## Sunday (9/6)
 
