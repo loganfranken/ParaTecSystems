@@ -46,7 +46,7 @@ function Game(canvas)
   this.replyTimer = 0;
   this.replyCount = 0;
   this.hasReplied = false;
-  this.isReplyButtonDown = false;
+  this.isReplyOptionActive = false;
 
   // Properties: Score
   this.currentScore = 0;
@@ -158,8 +158,12 @@ Game.prototype.loadStage = function(index)
   });
 }
 
+/**
+ * Updates the game's states
+ */
 Game.prototype.update = function()
 {
+  // STATE: Stage interstitial
   if(this.currentState === GameState.StartingStage)
   {
     if(this.stageIntroTimer <= 0)
@@ -172,20 +176,33 @@ Game.prototype.update = function()
     return;
   }
 
+  // STATE: Paused
   if(this.currentState != GameState.Playing)
   {
     return;
   }
 
+  // Update score
   this.currentScore--;
 
-  if(!this.isReplyButtonDown)
+  this.updateMessages();
+
+}
+
+Game.prototype.updateMessages = function()
+{
+  if(!this.isReplyOptionActive)
   {
     this.replyTimer = 0;
   }
 
   // Display chat messages
   var levelMessages = messages[this.currentStage];
+
+  if(!levelMessages)
+  {
+    return;
+  }
 
   if(this.currentMessageIndex >= levelMessages.length)
   {
@@ -195,6 +212,7 @@ Game.prototype.update = function()
 
   var currMessage = levelMessages[this.currentMessageIndex];
 
+  // CHECK: Current message display condition
   if(currMessage.condition && !currMessage.condition(game))
   {
     // Condition to display message hasn't been met, skip the message
@@ -202,11 +220,12 @@ Game.prototype.update = function()
     return;
   }
 
+  // CHECK: Previous message reply
   var prevMessage = levelMessages[this.currentMessageIndex - 1];
 
   if(prevMessage && prevMessage.awaitReply && !this.hasReplied)
   {
-    if(this.isReplyButtonDown)
+    if(this.isReplyOptionActive)
     {
       this.replyTimer++;
     }
@@ -215,23 +234,20 @@ Game.prototype.update = function()
     {
       this.replyCount++;
       this.hasReplied = true;
-      console.log('You replied!');
     }
   }
 
   if(!currMessage.delay || this.messageTimer >= currMessage.delay)
   {
-    // Display the message
+    // Prepare the message for display
     this.displayMessage = currMessage.content;
     this.messageTimer = 0;
     this.currentMessageIndex++;
     this.hasReplied = false;
-  }
-  else
-  {
-    this.messageTimer++;
+    return;
   }
 
+  this.messageTimer++;
 }
 
 Game.prototype.draw = function()
