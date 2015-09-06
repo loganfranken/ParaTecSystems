@@ -16,6 +16,21 @@ var GameSettings = {
   StageIntroTimerMax: 20,
 
   // Score Settings
-  StageScoreStart: 1000
+  StageScoreStart: 1000,
+
+  // General UI Settings
+  BackgroundFillStyle: '#000',
+  TextFillStyle: '#FFF',
+
+  // Draw Field Settings
+  DrawFieldBackgroundFillStyle: '#FFF',
+  DrawFieldTextFillStyle: '#000',
+
+  // Reflect Field Settings
+  ReflectFieldBackgroundFillStyle: '#333',
+
+  // Line Settings
+  UserLineFillStyle: '#000',
+  UserLineWidth: 5
 
 };

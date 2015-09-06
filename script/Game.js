@@ -3,13 +3,16 @@
  * @constructor
  * @param {HTMLCanvasElement} canvas  - Canvas for displaying the game
  */
-function Game(canvas)
+function Game(canvas, messageLogElement)
 {
   // Properties: Canvas
   this.canvas = canvas;
   this.context = canvas.getContext("2d");
+
   this.canvasWidth = canvas.width;
+
   this.canvasHeight = canvas.height;
+  this.halfCanvasHeight = (canvas.height/2);
 
   // Properties: Game
   this.currentState = GameState.Starting;
@@ -35,9 +38,11 @@ function Game(canvas)
   this.loadStage(this.currentStage);
   this.stageIntroTimer = 0;
 
+  // Properties: Messages (DOM Hooks)
+  this.messageLogElement = messageLogElement;
+
   // Properties: Messages
-  this.displayMessage = null;
-  this.displayMessageOffset = 0;
+  this.nextDisplayMessage = null;
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
 
@@ -243,7 +248,7 @@ Game.prototype.updateMessages = function()
   if(!currMessage.delay || this.messageTimer >= currMessage.delay)
   {
     // Prepare the message for display
-    this.displayMessage = currMessage.content;
+    this.nextDisplayMessage = currMessage.content;
     this.messageTimer = 0;
     this.currentMessageIndex++;
     this.hasReplied = false;
@@ -261,109 +266,122 @@ Game.prototype.draw = function()
   var self = this;
   var context = this.context;
 
-  // DRAW: Start Screen
+  // Clear the canvas
+  context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+  // STATE: Start Screen
   if(this.currentState === GameState.Starting)
   {
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-    context.fillStyle = '#FFF';
-    context.fillText('GAME TITLE', 100, 100);
-
+    this.drawTitleScreen('GAME TITLE');
     return;
   }
 
-  // DRAW: Pause Screen
+  // STATE: Pause Screen
   if(this.currentState === GameState.Paused)
   {
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-    context.fillStyle = '#FFF';
-    context.fillText('PAUSED', 100, 100);
-
+    this.drawTitleScreen('PAUSED');
     return;
   }
 
-  // DRAW: Level Interstitial
+  // STATE: Level Interstitial
   if(this.currentState === GameState.StartingStage)
   {
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-    context.fillStyle = '#FFF';
-    context.fillText('STARTING A LEVEL', 100, 100);
-
+    this.drawTitleScreen('STARTING A LEVEL');
     return;
   }
 
-  // DRAW: Playing
+  // Draw field
+  context.fillStyle = GameSettings.DrawFieldBackgroundFillStyle;
+  context.fillRect(0, 0, this.canvasWidth, this.halfCanvasHeight);
 
-  // Clear the canvas
-  context.fillStyle = '#FFF';
-  context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
-
-  var halfCanvasHeight = this.canvasHeight/2;
-
-  // Draw the top half
-  context.fillStyle = '#FFF';
-  context.fillRect(0, 0, this.canvasWidth, halfCanvasHeight);
-
-  // Draw the bottom half
-  context.fillStyle = '#333';
-  context.fillRect(0, halfCanvasHeight, this.canvasWidth, halfCanvasHeight);
+  // Reflect field
+  context.fillStyle = GameSettings.ReflectFieldBackgroundFillStyle;
+  context.fillRect(0, this.halfCanvasHeight, this.canvasWidth, this.halfCanvasHeight);
 
   // Score
-  context.fillStyle = '#000';
+  context.fillStyle = GameSettings.DrawFieldTextFillStyle;
   context.fillText("TOTAL SCORE: " + this.totalScore, 10, 20);
   context.fillText("STAGE SCORE: " + this.currentScore, 10, 40);
 
-  if(this.displayMessage)
+  // Messages
+  if(this.nextDisplayMessage)
   {
-    document.getElementById('chat-sidebar').innerHTML += this.displayMessage;
-    this.displayMessage = null;
+    this.drawMessage(this.nextDisplayMessage);
+    this.nextDisplayMessage = null;
   }
 
-  // Draw the nodes
+  // Nodes
   this.nodes.forEach(function(node, i) {
     node.draw(context);
   });
 
-  // Draw the blocks
+  // Blocks
   this.blocks.forEach(function(block, i) {
     block.draw(context);
   });
 
   // Draw the user's line
-  context.strokeStyle = '#000';
-  context.beginPath();
-  context.lineWidth = 5;
-
-  this.linePoints.forEach(function(point, i) {
-
-    if(i === 0)
-    {
-      context.moveTo(point.x, point.y);
-    }
-    else
-    {
-      context.lineTo(point.x, point.y);
-    }
-
-  });
-
-  context.lineJoin = 'round';
-  context.stroke();
+  this.drawUserLine(false);
 
   // Draw the reverse of the user's line
-  context.strokeStyle = '#FFF';
+  this.drawUserLine(true);
+}
+
+/**
+ * Draws a message to the screen
+ * @param {string} text  - Message to display onscreen
+ */
+Game.prototype.drawMessage = function(message)
+{
+  this.messageLogElement.innerHTML += message;
+}
+
+/**
+ * Clears all of the messages onscreen
+ */
+Game.prototype.clearDrawnMessages = function()
+{
+  this.messageLogElement.innerHTML = '';
+}
+
+/**
+ * Draws a screen with just a message
+ * @param {string} text  - Text to display onscreen
+ */
+Game.prototype.drawTitleScreen = function(text)
+{
+  var context = this.context;
+
+  context.fillStyle = GameSettings.BackgroundFillStyle;
+  context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+  context.fillStyle = GameSettings.TextFillStyle;
+  context.fillText(text, 100, 100);
+}
+
+/**
+ * Draws a user's line to screen
+ * @param {boolean} isReflected  -  Whether or not the line is being drawn on
+ *                                  the reflected field
+ */
+Game.prototype.drawUserLine = function(isReflected)
+{
+  var context = this.context;
+
+  context.strokeStyle = GameSettings.UserLineFillStyle;
   context.beginPath();
-  context.lineWidth = 5;
+  context.lineWidth = GameSettings.UserLineWidth;
 
   this.linePoints.forEach(function(point, i) {
 
-    var x = self.canvasWidth - point.x;
-    var y = self.canvasHeight - point.y;
+    var x = point.x;
+    var y = point.y;
+
+    if(isReflected)
+    {
+      x = self.canvasWidth - point.x;
+      y = self.canvasHeight - point.y;
+    }
 
     if(i === 0)
     {
