@@ -10,6 +10,7 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
   this.context = canvas.getContext("2d");
 
   this.canvasWidth = canvas.width;
+  this.halfCanvasWidth = (canvas.width/2);
 
   this.canvasHeight = canvas.height;
   this.halfCanvasHeight = (canvas.height/2);
@@ -439,7 +440,10 @@ Game.prototype.draw = function()
   // STATE: Start Screen
   if(this.currentState === GameState.Starting)
   {
-    this.drawTitleScreen('GAME TITLE');
+    this.drawTitleScreen(
+      GameSettings.Title.toUpperCase(),
+      "Click screen to log onto system"
+    );
     return;
   }
 
@@ -453,7 +457,10 @@ Game.prototype.draw = function()
   // STATE: Level Interstitial
   if(this.currentState === GameState.StartingStage)
   {
-    this.drawTitleScreen('STARTING A LEVEL');
+    this.drawTitleScreen(
+      "Loading Daily Assignments",
+      new Date(1988, 1, 24).toDateString()
+    );
     return;
   }
 
@@ -515,15 +522,32 @@ Game.prototype.clearDrawnMessages = function()
  * Draws a screen with just a message
  * @param {string} text  - Text to display onscreen
  */
-Game.prototype.drawTitleScreen = function(text)
+Game.prototype.drawTitleScreen = function(title, subtitle)
 {
   var context = this.context;
 
+  // Background
   context.fillStyle = GameSettings.BackgroundFillStyle;
   context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
+
+  context.textAlign = 'center';
   context.fillStyle = GameSettings.TextFillStyle;
-  context.fillText(text, 100, 100);
+
+  // Title
+  var titleText = title.toUpperCase();
+  context.textBaseline = 'middle';
+  context.font = GameSettings.TitleScreenFontStyle;
+  context.fillText(titleText, this.halfCanvasWidth, this.halfCanvasHeight);
+
+  // Subtitle
+  if(subtitle)
+  {
+    var subtitleText = subtitle.toUpperCase();
+    context.textBaseline = 'bottom';
+    context.font = GameSettings.TitleScreenSubtitleFontStyle;
+    context.fillText(subtitleText, this.halfCanvasWidth, this.canvasHeight - 20);
+  }
 }
 
 /**

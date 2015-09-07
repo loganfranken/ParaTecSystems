@@ -12,6 +12,11 @@ html, body
   width: 100%;
 }
 
+canvas
+{
+  cursor: pointer;
+}
+
 #game-ui-wrapper
 {
   height: 0;

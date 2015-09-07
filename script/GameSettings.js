@@ -1,5 +1,7 @@
 var GameSettings = {
 
+  Title: 'ParaTec Systems',
+
   // Block Settings`
   BlockFillStyle: '#000',
 
@@ -20,7 +22,9 @@ var GameSettings = {
 
   // General UI Settings
   BackgroundFillStyle: '#000',
-  TextFillStyle: '#FFF',
+  TextFillStyle: '#00A200',
+  TitleScreenFontStyle: 'bold 2em monospace',
+  TitleScreenSubtitleFontStyle: 'bold 1em monospace',
 
   // Draw Field Settings
   DrawFieldBackgroundFillStyle: '#FFF',
