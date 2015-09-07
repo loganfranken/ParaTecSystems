@@ -3,7 +3,7 @@
  * @constructor
  * @param {HTMLCanvasElement} canvas  - Canvas for displaying the game
  */
-function Game(canvas, messageLogElement)
+function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
 {
   // Properties: Canvas
   this.canvas = canvas;
@@ -13,6 +13,11 @@ function Game(canvas, messageLogElement)
 
   this.canvasHeight = canvas.height;
   this.halfCanvasHeight = (canvas.height/2);
+
+  // Properties: DOM Elements
+  this.messageLogElement = messageLogElement;
+  this.replyButtonElement = replyButtonElement;
+  this.pauseButtonElement = pauseButtonElement;
 
   // Properties: Game
   this.currentState = GameState.Starting;
@@ -37,9 +42,6 @@ function Game(canvas, messageLogElement)
   this.currentStage = 0;
   this.loadStage(this.currentStage);
   this.stageIntroTimer = 0;
-
-  // Properties: Messages (DOM Hooks)
-  this.messageLogElement = messageLogElement;
 
   // Properties: Messages
   this.nextDisplayMessage = null;
@@ -410,10 +412,10 @@ Game.prototype.start = function()
   self.canvas.addEventListener('mousemove', function(mouseEvent) { self.handleMouseMove(self, mouseEvent) }, false);
   self.canvas.addEventListener('click', function(mouseEvent) { self.handleMouseClick(self, mouseEvent) }, false);
 
-  document.getElementById('reply-button').addEventListener('mousedown', function(mouseEvent) { self.handleReplyButtonMouseDown(self, mouseEvent) }, false);
-  document.getElementById('reply-button').addEventListener('mouseup', function(mouseEvent) { self.handleReplyButtonMouseUp(self, mouseEvent) }, false);
+  self.replyButtonElement.addEventListener('mousedown', function(mouseEvent) { self.handleReplyButtonMouseDown(self, mouseEvent) }, false);
+  self.replyButtonElement.addEventListener('mouseup', function(mouseEvent) { self.handleReplyButtonMouseUp(self, mouseEvent) }, false);
 
-  document.getElementById('pause-button').addEventListener('click', function(mouseEvent) { self.handlePauseButtonClick(self, mouseEvent) }, false);
+  self.pauseButtonElement.addEventListener('click', function(mouseEvent) { self.handlePauseButtonClick(self, mouseEvent) }, false);
 
   function loop()
   {
@@ -421,7 +423,7 @@ Game.prototype.start = function()
     self.draw();
   }
 
-  this.currentScore = 1000;
+  self.loadStage(0);
 
   window.setInterval(loop, 50);
   loop();
