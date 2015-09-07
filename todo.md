@@ -1,5 +1,9 @@
 # TODO
 
+* Investigate relative canvas sizing
+* Style message sidebar
+* Cap decreasing score at 0
+* Clear all messages between stages
 * Create Day 1 stages
 * Create Day 2 stages
 * Create Day 3 stages
@@ -10,7 +14,6 @@
 * Create Day 8 stages
 * Create Day 9 stages
 * Create Day 10 stages
-* Investigate relative canvas sizing
 * Style nodes
 * Style title screen
 * Style level title screen
