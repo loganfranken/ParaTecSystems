@@ -1,6 +1,5 @@
 # TODO
 
-* Investigate relative canvas sizing
 * Style message sidebar
 * Cap decreasing score at 0
 * Clear all messages between stages
