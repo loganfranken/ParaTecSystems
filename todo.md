@@ -4,7 +4,6 @@
 * Style message sidebar
 * Cap decreasing score at 0
 * Clear all messages between stages
-* Create Day 1 stages
 * Create Day 2 stages
 * Create Day 3 stages
 * Create Day 4 stages

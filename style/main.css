@@ -1,17 +1,44 @@
 html, body
 {
   background: #000;
+  height: 100%;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
-canvas
+#game-ui-wrapper
 {
-  background: #FFF;
+  height: 0;
+  padding-bottom: 50%;
+  position: relative;
 }
 
-#chat-sidebar
+#game-ui
 {
-  color: #FFF;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#game-wrapper
+{
+  float: left;
+  height: 100%;
+  overflow: hidden;
+  width: 80%;
+}
+
+#message-sidebar
+{
   float: right;
+  height: 100%;
+  width: 20%;
+}
+
+#chat-sidebar, #reply-button, #pause-button
+{
+  display: none;
 }

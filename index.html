@@ -5,11 +5,26 @@
   <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-  <canvas height="700" width="1000" id="game"></canvas>
-  <div id="chat-sidebar"></div>
-  <button id="reply-button">Reply</button>
-  <button id="pause-button">Pause</button>
 
+<div id="game-ui-wrapper">
+  <div id="game-ui">
+
+    <!-- Game -->
+    <div id="game-wrapper">
+      <canvas id="game"></canvas>
+    </div>
+
+    <!-- Message Sidebar -->
+    <div id="message-sidebar">
+      <div id="chat-sidebar"></div>
+      <button id="reply-button">Reply</button>
+      <button id="pause-button">Pause</button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- Script Includes -->
   <script src="data/stages.js"></script>
   <script src="data/messages.js"></script>
 
