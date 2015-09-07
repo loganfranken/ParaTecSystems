@@ -19,11 +19,15 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
   this.replyButtonElement = replyButtonElement;
   this.pauseButtonElement = pauseButtonElement;
 
+  // Properties: User Events
+  this.isMouseClicked = false;
+  this.isMouseDown = false;
+  this.mouseMovements = [];
+  this.isPauseButtonClicked = false;
+  this.isReplyButtonPressed = false;
+
   // Properties: Game
   this.currentState = GameState.Starting;
-
-  // Properties: User Mouse
-  this.isMouseDown = false;
 
   // Properties: Line
   this.linePoints = [];
@@ -53,7 +57,6 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
   this.replyTimer = 0;
   this.replyCount = 0;
   this.hasReplied = false;
-  this.isReplyOptionActive = false;
 
   // Properties: Score
   this.currentScore = 0;
@@ -201,6 +204,12 @@ Game.prototype.update = function()
  */
 Game.prototype.updateMessages = function()
 {
+  // Respond to user events
+  this.handleMouseClick();
+  this.handleMouseUp();
+  this.handleMouseMove();
+  this.handlePauseButtonClick();
+
   if(!this.isReplyOptionActive)
   {
     this.replyTimer = 0;
@@ -258,6 +267,158 @@ Game.prototype.updateMessages = function()
   }
 
   this.messageTimer++;
+}
+
+/**
+ * Checks if the user has clicked their mouse and updates game's state
+ * if applicable
+ */
+Game.prototype.handleMouseClick = function()
+{
+  if(!this.isMouseClicked)
+  {
+    return;
+  }
+
+  this.isMouseClicked = false;
+
+  if(game.currentState === GameState.Starting)
+  {
+    this.stageIntroTimer = GameSettings.StageIntroTimerMax;
+    game.currentState = GameState.StartingStage;
+    return;
+  }
+
+  if(game.currentState === GameState.Paused)
+  {
+    game.currentState = GameState.Playing;
+    return;
+  }
+}
+
+/**
+ * Checks if the user has unpressed their mouse button and updates game's state
+ * if applicable
+ */
+Game.prototype.handleMouseUp = function()
+{
+  if(this.isMouseDown)
+  {
+    return;
+  }
+
+  game.resetLine();
+}
+
+/**
+ * Checks if the user has clicked the pause button and updates the game's state
+ * if applicable
+ */
+Game.prototype.handlePauseButtonClick = function()
+{
+  if(!this.isPauseButtonClicked)
+  {
+    return;
+  }
+
+  this.isPauseButtonClicked = false;
+
+  if(game.currentState === GameState.Paused)
+  {
+    game.currentState = GameState.Playing;
+  }
+  else
+  {
+    game.currentState = GameState.Paused;
+  }
+}
+
+/**
+ * Checks if the user has moved their mouse and updates the game's state
+ * if applicable
+ */
+Game.prototype.handleMouseMove = function()
+{
+  if(!game.isMouseDown)
+  {
+    this.mouseMovements = [];
+    return;
+  }
+
+  this.mouseMovements.forEach(function(movement, i) {
+    handleExtendLine(movement.x, movement.y);
+  });
+}
+
+/**
+ * Handles the extension of the user's line, triggering appropriate actions
+ * based on where the line has moved
+ * @param {integer} x       - X-coordinate of where to extend the line
+ * @param {integer} y       - Y-cooridnate of where to extend the line
+ */
+Game.prototype.handleExtendLine = function(x, y) {
+
+  var self = this;
+
+  var reflectX = self.canvasWidth - x;
+  var reflectY = self.canvasHeight - y;
+
+  // Detect if user has moved outside the drawing bounds
+  if(y > (self.canvasHeight/2))
+  {
+    self.resetLine();
+  }
+
+  if(self.isMouseDown)
+  {
+    // Detect if user has touched any blocks
+    self.blocks.forEach(function(block, i) {
+
+      if(block.contains(x, y) || block.contains(reflectX, reflectY)) {
+        self.resetLine();
+      }
+
+    });
+
+    // Activate all nodes that the user is touching
+    self.nodes.forEach(function(node, i) {
+
+      if(self.activeNodes[i]) {
+        return;
+      }
+
+      if(self.contains(x, y) || node.contains(reflectX, reflectY)) {
+        self.activeNodes[i] = true;
+      }
+
+    });
+
+    // Draw the line
+    var hasLineStarted = self.linePoints.length > 0;
+    if(hasLineStarted || self.activeNodes[0])
+    {
+      self.linePoints.push({ x: x, y: y });
+    }
+
+    // Get a count of active nodes
+    var activeNodesCount = 0;
+    self.activeNodes.forEach(function(node, i) {
+      activeNodesCount++;
+    });
+
+    if(self.activeNodes[1])
+    {
+      if(activeNodesCount === self.nodes.length)
+      {
+        self.advanceStage();
+      }
+      else
+      {
+        self.resetLine();
+      }
+    }
+  }
+
 }
 
 /**
@@ -407,15 +568,15 @@ Game.prototype.start = function()
 {
   var self = this;
 
-  self.canvas.addEventListener('mousedown', function(mouseEvent) { self.handleMouseDown(self, mouseEvent) }, false);
-  self.canvas.addEventListener('mouseup', function(mouseEvent) { self.handleMouseUp(self, mouseEvent) }, false);
-  self.canvas.addEventListener('mousemove', function(mouseEvent) { self.handleMouseMove(self, mouseEvent) }, false);
-  self.canvas.addEventListener('click', function(mouseEvent) { self.handleMouseClick(self, mouseEvent) }, false);
+  self.canvas.addEventListener('mousedown', function() { self.isMouseDown = true; }, false);
+  self.canvas.addEventListener('mouseup', function() { self.isMouseDown = false; }, false);
+  self.canvas.addEventListener('mousemove', function(mouseEvent) { self.mouseMovements.push({ x: mouseEvent.clientX, y: mouseEvent.clientY }); }, false);
+  self.canvas.addEventListener('click', function() { self.isMouseClicked = true; }, false);
 
-  self.replyButtonElement.addEventListener('mousedown', function(mouseEvent) { self.handleReplyButtonMouseDown(self, mouseEvent) }, false);
-  self.replyButtonElement.addEventListener('mouseup', function(mouseEvent) { self.handleReplyButtonMouseUp(self, mouseEvent) }, false);
+  self.replyButtonElement.addEventListener('mousedown', function() { self.isReplyButtonPressed = true; }, false);
+  self.replyButtonElement.addEventListener('mouseup', function() { self.isReplyButtonPressed = false; }, false);
 
-  self.pauseButtonElement.addEventListener('click', function(mouseEvent) { self.handlePauseButtonClick(self, mouseEvent) }, false);
+  self.pauseButtonElement.addEventListener('click', function(mouseEvent) { self.isPauseButtonClicked = true; }, false);
 
   function loop()
   {
@@ -427,118 +588,4 @@ Game.prototype.start = function()
 
   window.setInterval(loop, 50);
   loop();
-}
-
-Game.prototype.handleMouseClick = function(game, mouseEvent)
-{
-  if(game.currentState === GameState.Starting)
-  {
-    this.stageIntroTimer = 20;
-    game.currentState = GameState.StartingStage;
-    return;
-  }
-
-  if(game.currentState === GameState.Paused)
-  {
-    game.currentState = GameState.Playing;
-    return;
-  }
-}
-
-Game.prototype.handleMouseUp = function(game, mouseEvent)
-{
-  game.isMouseDown = false;
-  game.resetLine();
-}
-
-Game.prototype.handleMouseDown = function(game, mouseEvent)
-{
-  game.isMouseDown = true;
-}
-
-Game.prototype.handleReplyButtonMouseUp = function(game, mouseEvent)
-{
-  game.isReplyButtonDown = false;
-}
-
-Game.prototype.handleReplyButtonMouseDown = function(game, mouseEvent)
-{
-  game.isReplyButtonDown = true;
-}
-
-Game.prototype.handlePauseButtonClick = function(game, mouseEvent)
-{
-  if(game.currentState === GameState.Paused)
-  {
-    game.currentState = GameState.Playing;
-  }
-  else
-  {
-    game.currentState = GameState.Paused;
-  }
-}
-
-Game.prototype.handleMouseMove = function(game, mouseEvent)
-{
-  var mouseX = mouseEvent.clientX;
-  var mouseY = mouseEvent.clientY;
-
-  var reverseMouseX = game.canvasWidth - mouseX;
-  var reverseMouseY = game.canvasHeight - mouseY;
-
-  // Detect if user has moved outside the drawing bounds
-  if(mouseY > (game.canvasHeight/2))
-  {
-    game.resetLine();
-  }
-
-  if(game.isMouseDown)
-  {
-    // Detect if user has touched any blocks
-    game.blocks.forEach(function(block, i) {
-
-      if(block.contains(mouseX, mouseY) || block.contains(reverseMouseX, reverseMouseY)) {
-        game.resetLine();
-      }
-
-    });
-
-    // Activate all nodes that the user is touching
-    game.nodes.forEach(function(node, i) {
-
-      if(game.activeNodes[i]) {
-        return;
-      }
-
-      if(node.contains(mouseX, mouseY) || node.contains(reverseMouseX, reverseMouseY)) {
-        game.activeNodes[i] = true;
-      }
-
-    });
-
-    // Draw the line
-    var hasLineStarted = game.linePoints.length > 0;
-    if(hasLineStarted || game.activeNodes[0])
-    {
-      game.linePoints.push({ x: mouseX, y: mouseY });
-    }
-
-    // Get a count of active nodes
-    var activeNodesCount = 0;
-    game.activeNodes.forEach(function(node, i) {
-      activeNodesCount++;
-    });
-
-    if(game.activeNodes[1])
-    {
-      if(activeNodesCount === game.nodes.length)
-      {
-        game.advanceStage();
-      }
-      else
-      {
-        game.resetLine();
-      }
-    }
-  }
 }

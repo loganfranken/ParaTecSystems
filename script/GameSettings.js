@@ -12,7 +12,7 @@ var GameSettings = {
   // Message Settings
   ReplyTimerMax: 10,
 
-  // Stage Intro Settings
+  // Title Screen Timer Settings
   StageIntroTimerMax: 20,
 
   // Score Settings
