@@ -1,16 +1,16 @@
 # TODO
 
-## Sunday (9/6)
-
-* Finish refactoring
-* Create stages 2, 3, 4, 5, 6, 7
-* Visual work
-
-## Monday (9/7)
-
-* Create stages 8, 9, 10
-
-# TODO (Extra)
-
-* Don't allow the line to overlap itself
-* Audio work
+* Create Day 1 stages
+* Create Day 2 stages
+* Create Day 3 stages
+* Create Day 4 stages
+* Create Day 5 stages
+* Create Day 6 stages
+* Create Day 7 stages
+* Create Day 8 stages
+* Create Day 9 stages
+* Create Day 10 stages
+* Investigate relative canvas sizing
+* Style nodes
+* Style title screen
+* Style level title screen
