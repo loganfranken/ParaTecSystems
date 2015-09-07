@@ -173,6 +173,12 @@ Game.prototype.loadStage = function(index)
  */
 Game.prototype.update = function()
 {
+  // Respond to user events
+  this.handleMouseClick();
+  this.handleMouseUp();
+  this.handleMouseMove();
+  this.handlePauseButtonClick();
+
   // STATE: Stage interstitial
   if(this.currentState === GameState.StartingStage)
   {
@@ -204,12 +210,6 @@ Game.prototype.update = function()
  */
 Game.prototype.updateMessages = function()
 {
-  // Respond to user events
-  this.handleMouseClick();
-  this.handleMouseUp();
-  this.handleMouseMove();
-  this.handlePauseButtonClick();
-
   if(!this.isReplyOptionActive)
   {
     this.replyTimer = 0;
@@ -339,15 +339,19 @@ Game.prototype.handlePauseButtonClick = function()
  */
 Game.prototype.handleMouseMove = function()
 {
-  if(!game.isMouseDown)
+  var self = this;
+
+  if(!self.isMouseDown)
   {
-    this.mouseMovements = [];
+    self.mouseMovements = [];
     return;
   }
 
-  this.mouseMovements.forEach(function(movement, i) {
-    handleExtendLine(movement.x, movement.y);
+  self.mouseMovements.forEach(function(movement, i) {
+    self.handleExtendLine(movement.x, movement.y);
   });
+
+  self.mouseMovements = [];
 }
 
 /**
@@ -387,7 +391,7 @@ Game.prototype.handleExtendLine = function(x, y) {
         return;
       }
 
-      if(self.contains(x, y) || node.contains(reflectX, reflectY)) {
+      if(node.contains(x, y) || node.contains(reflectX, reflectY)) {
         self.activeNodes[i] = true;
       }
 
