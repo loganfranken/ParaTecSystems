@@ -45,8 +45,8 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
 
   // Properties: Stages
   this.currentStage = 0;
-  this.loadStage(this.currentStage);
-  this.stageIntroTimer = 0;
+  this.currentDay = 0;
+  this.dayIntroTimer = 0;
 
   // Properties: Messages
   this.nextDisplayMessage = null;
@@ -54,7 +54,6 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
   this.messageTimer = 0;
 
   // Properties: Message Replies
-  this.replyTimerMax = GameSettings.ReplyTimerMax;
   this.replyTimer = 0;
   this.replyCount = 0;
   this.hasReplied = false;
@@ -106,28 +105,40 @@ Game.prototype.resetLine = function()
 Game.prototype.advanceStage = function()
 {
   this.totalScore += this.currentScore;
-
   this.resetStage();
-
   this.currentStage++;
-  this.loadStage(this.currentStage);
 
-  this.currentState = GameState.StartingStage;
-  this.stageIntroTimer = GameSettings.StageIntroTimerMax;
+  var dayStages = stages[this.currentDay];
+
+  if(this.currentStage > dayStages.length)
+  {
+    this.currentState = GameState.StartingDay;
+    this.dayIntroTimer = GameSettings.DayIntroTimerMax;
+
+    this.currentDay++;
+    this.currentStage = 0;
+  }
+  else
+  {
+    this.currentState = GameState.FinishedStage;
+    this.stageOutroTimer = GameSettings.StageOutroTimerMax;
+  }
+
+  this.loadStage(this.currentDay, this.currentStage);
 }
 
 /**
  * Loads the stage corresponding to the specified index
  * @param {integer} index  - Index of the stage to load
  */
-Game.prototype.loadStage = function(index)
+Game.prototype.loadStage = function(dayIndex, stageIndex)
 {
   function calcRelativeValue(percentage, context) {
     return (parseInt(percentage, 10)/100) * context;
   }
 
   var self = this;
-  var stageData = stages[index];
+  var stageData = stages[dayIndex][stageIndex];
   var stageElements = stageData.split(';');
 
   stageElements.forEach(function(elem, i) {
@@ -180,16 +191,29 @@ Game.prototype.update = function()
   this.handleMouseMove();
   this.handlePauseButtonClick();
 
-  // STATE: Stage interstitial
-  if(this.currentState === GameState.StartingStage)
+  // STATE: Starting day
+  if(this.currentState === GameState.StartingDay)
   {
-    if(this.stageIntroTimer <= 0)
+    if(this.dayIntroTimer <= 0)
     {
       this.currentState = GameState.Playing;
       return;
     }
 
-    this.stageIntroTimer--;
+    this.dayIntroTimer--;
+    return;
+  }
+
+  // STATE: Finished stage
+  if(this.currentState === GameState.FinishedStage)
+  {
+    if(this.stageOutroTimer <= 0)
+    {
+      this.currentState = GameState.Playing;
+      return;
+    }
+
+    this.stageOutroTimer--;
     return;
   }
 
@@ -200,7 +224,14 @@ Game.prototype.update = function()
   }
 
   // Update score
-  this.currentScore--;
+  if(this.currentScore > 0)
+  {
+    this.currentScore--;
+  }
+  else
+  {
+    this.currentScore = 0;
+  }
 
   this.updateMessages();
 
@@ -260,7 +291,7 @@ Game.prototype.updateMessages = function()
   if(!currMessage.delay || this.messageTimer >= currMessage.delay)
   {
     // Prepare the message for display
-    this.nextDisplayMessage = currMessage.content;
+    this.nextDisplayMessage = currMessage;
     this.messageTimer = 0;
     this.currentMessageIndex++;
     this.hasReplied = false;
@@ -283,16 +314,17 @@ Game.prototype.handleMouseClick = function()
 
   this.isMouseClicked = false;
 
-  if(game.currentState === GameState.Starting)
+  if(this.currentState === GameState.Starting)
   {
-    this.stageIntroTimer = GameSettings.StageIntroTimerMax;
-    game.currentState = GameState.StartingStage;
+    this.dayIntroTimer = GameSettings.DayIntroTimerMax;
+    this.currentState = GameState.StartingDay;
+    this.loadStage(0, 0);
     return;
   }
 
-  if(game.currentState === GameState.Paused)
+  if(this.currentState === GameState.Paused)
   {
-    game.currentState = GameState.Playing;
+    this.currentState = GameState.Playing;
     return;
   }
 }
@@ -308,7 +340,7 @@ Game.prototype.handleMouseUp = function()
     return;
   }
 
-  game.resetLine();
+  this.resetLine();
 }
 
 /**
@@ -324,13 +356,13 @@ Game.prototype.handlePauseButtonClick = function()
 
   this.isPauseButtonClicked = false;
 
-  if(game.currentState === GameState.Paused)
+  if(this.currentState === GameState.Paused)
   {
-    game.currentState = GameState.Playing;
+    this.currentState = GameState.Playing;
   }
   else
   {
-    game.currentState = GameState.Paused;
+    this.currentState = GameState.Paused;
   }
 }
 
@@ -455,11 +487,11 @@ Game.prototype.draw = function()
   }
 
   // STATE: Level Interstitial
-  if(this.currentState === GameState.StartingStage)
+  if(this.currentState === GameState.StartingDay)
   {
     this.drawTitleScreen(
       "Loading Daily Assignments",
-      new Date(1988, 1, 24).toDateString()
+      new Date(1988, 3, 15 + this.currentDay).toDateString()
     );
     return;
   }
@@ -480,7 +512,7 @@ Game.prototype.draw = function()
   // Messages
   if(this.nextDisplayMessage)
   {
-    this.drawMessage(this.nextDisplayMessage);
+    this.drawMessage(this.nextDisplayMessage.speaker, this.nextDisplayMessage.content);
     this.nextDisplayMessage = null;
   }
 
@@ -499,15 +531,25 @@ Game.prototype.draw = function()
 
   // Draw the reverse of the user's line
   this.drawUserLine(true);
+
+  // STATE: Level Interstitial
+  if(this.currentState === GameState.FinishedStage)
+  {
+    console.log("COMPLETE!");
+    return;
+  }
 }
 
 /**
  * Draws a message to the screen
  * @param {string} text  - Message to display onscreen
  */
-Game.prototype.drawMessage = function(message)
+Game.prototype.drawMessage = function(speaker, message)
 {
-  this.messageLogElement.innerHTML += message;
+  var message = '<li><span class="speaker">' + speaker + '</span> ' + message + '</li>';
+  var currHtml = this.messageLogElement.innerHTML;
+
+  this.messageLogElement.innerHTML = message + currHtml;
 }
 
 /**
@@ -611,8 +653,6 @@ Game.prototype.start = function()
     self.update();
     self.draw();
   }
-
-  self.loadStage(0);
 
   window.setInterval(loop, 50);
   loop();
