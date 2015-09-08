@@ -61,6 +61,11 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
   // Properties: Score
   this.currentScore = 0;
   this.totalScore = 0;
+
+  // Scanlines
+  this.scanLineImage = new Image();
+  this.scanLineImage.src = "images/scanlines.png";
+
 }
 
 /**
@@ -476,68 +481,73 @@ Game.prototype.draw = function()
       GameSettings.Title.toUpperCase(),
       "Click screen to log onto system"
     );
-    return;
   }
 
   // STATE: Pause Screen
-  if(this.currentState === GameState.Paused)
+  else if(this.currentState === GameState.Paused)
   {
     this.drawTitleScreen('PAUSED');
-    return;
   }
 
   // STATE: Level Interstitial
-  if(this.currentState === GameState.StartingDay)
+  else if(this.currentState === GameState.StartingDay)
   {
     this.drawTitleScreen(
       "Loading Daily Assignments",
       new Date(1988, 3, 15 + this.currentDay).toDateString()
     );
-    return;
   }
 
-  // Draw field
-  context.fillStyle = GameSettings.DrawFieldBackgroundFillStyle;
-  context.fillRect(0, 0, this.canvasWidth, this.halfCanvasHeight);
+  else {
 
-  // Reflect field
-  context.fillStyle = GameSettings.ReflectFieldBackgroundFillStyle;
-  context.fillRect(0, this.halfCanvasHeight, this.canvasWidth, this.halfCanvasHeight);
+    // Draw field
+    context.fillStyle = GameSettings.DrawFieldBackgroundFillStyle;
+    context.fillRect(0, 0, this.canvasWidth, this.halfCanvasHeight);
 
-  // Score
-  context.fillStyle = GameSettings.DrawFieldTextFillStyle;
-  context.fillText("TOTAL SCORE: " + this.totalScore, 10, 20);
-  context.fillText("STAGE SCORE: " + this.currentScore, 10, 40);
+    // Reflect field
+    context.fillStyle = GameSettings.ReflectFieldBackgroundFillStyle;
+    context.fillRect(0, this.halfCanvasHeight, this.canvasWidth, this.halfCanvasHeight);
 
-  // Messages
-  if(this.nextDisplayMessage)
-  {
-    this.drawMessage(this.nextDisplayMessage.speaker, this.nextDisplayMessage.content);
-    this.nextDisplayMessage = null;
+    // Score
+    context.fillStyle = GameSettings.DrawFieldTextFillStyle;
+    context.fillText("TOTAL SCORE: " + this.totalScore, 10, 20);
+    context.fillText("STAGE SCORE: " + this.currentScore, 10, 40);
+
+    // Messages
+    if(this.nextDisplayMessage)
+    {
+      this.drawMessage(this.nextDisplayMessage.speaker, this.nextDisplayMessage.content);
+      this.nextDisplayMessage = null;
+    }
+
+    // Nodes
+    this.nodes.forEach(function(node, i) {
+      node.draw(context);
+    });
+
+    // Blocks
+    this.blocks.forEach(function(block, i) {
+      block.draw(context);
+    });
+
+    // Draw the user's line
+    this.drawUserLine(false);
+
+    // Draw the reverse of the user's line
+    this.drawUserLine(true);
+
+    // STATE: Level Interstitial
+    if(this.currentState === GameState.FinishedStage)
+    {
+      console.log("COMPLETE!");
+      return;
+    }
+
   }
 
-  // Nodes
-  this.nodes.forEach(function(node, i) {
-    node.draw(context);
-  });
+  context.fillStyle = context.createPattern(self.scanLineImage, "repeat");
+  context.fillRect(0, 0, self.canvasWidth, self.canvasHeight);
 
-  // Blocks
-  this.blocks.forEach(function(block, i) {
-    block.draw(context);
-  });
-
-  // Draw the user's line
-  this.drawUserLine(false);
-
-  // Draw the reverse of the user's line
-  this.drawUserLine(true);
-
-  // STATE: Level Interstitial
-  if(this.currentState === GameState.FinishedStage)
-  {
-    console.log("COMPLETE!");
-    return;
-  }
 }
 
 /**
