@@ -3,7 +3,7 @@ var GameSettings = {
   Title: 'ParaTec Systems',
 
   // Block Settings`
-  BlockFillStyle: '#000',
+  BlockFillStyle: '#333',
 
   // Node Settings
   NodeRadiusPercentage: 0.02,
@@ -27,14 +27,15 @@ var GameSettings = {
   TitleScreenSubtitleFontStyle: 'bold 1em monospace',
 
   // Draw Field Settings
-  DrawFieldBackgroundFillStyle: '#FFF',
+  DrawFieldBackgroundFillStyle: '#000',
   DrawFieldTextFillStyle: '#000',
 
   // Reflect Field Settings
-  ReflectFieldBackgroundFillStyle: '#333',
+  ReflectFieldBorderStrokeStyle: 'green',
+  ReflectFieldBorderWidth: 1,
 
   // Line Settings
-  UserLineFillStyle: '#000',
+  UserLineFillStyle: 'yellow',
   UserLineWidth: 5
 
 };

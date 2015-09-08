@@ -504,8 +504,14 @@ Game.prototype.draw = function()
     context.fillRect(0, 0, this.canvasWidth, this.halfCanvasHeight);
 
     // Reflect field
-    context.fillStyle = GameSettings.ReflectFieldBackgroundFillStyle;
-    context.fillRect(0, this.halfCanvasHeight, this.canvasWidth, this.halfCanvasHeight);
+    context.strokeStyle = GameSettings.ReflectFieldBorderStrokeStyle;
+    context.lineWidth = GameSettings.ReflectFieldBorderLineWidth;
+
+    context.beginPath();
+    context.moveTo(0, this.halfCanvasHeight);
+    context.lineTo(this.canvasWidth, this.halfCanvasHeight);
+
+    context.stroke();
 
     // Score
     context.fillStyle = GameSettings.DrawFieldTextFillStyle;
@@ -637,6 +643,7 @@ Game.prototype.drawUserLine = function(isReflected)
   });
 
   context.lineJoin = 'round';
+
   context.stroke();
 }
 

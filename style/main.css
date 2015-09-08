@@ -43,7 +43,7 @@ canvas
 
 #sidebar
 {
-  float: right;
+  float: left;
   height: 100%;
   overflow: hidden;
   width: 20%;
