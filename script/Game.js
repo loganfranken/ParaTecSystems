@@ -126,7 +126,6 @@ Game.prototype.advanceStage = function()
   else
   {
     this.currentState = GameState.FinishedStage;
-    this.stageOutroTimer = GameSettings.StageOutroTimerMax;
   }
 
   this.loadStage(this.currentDay, this.currentStage);
@@ -190,9 +189,16 @@ Game.prototype.loadStage = function(dayIndex, stageIndex)
  */
 Game.prototype.update = function()
 {
+  this.handleMouseUp();
+
+  // STATE: Finished stage
+  if(this.currentState === GameState.FinishedStage)
+  {
+    return;
+  }
+
   // Respond to user events
   this.handleMouseClick();
-  this.handleMouseUp();
   this.handleMouseMove();
   this.handlePauseButtonClick();
 
@@ -206,19 +212,6 @@ Game.prototype.update = function()
     }
 
     this.dayIntroTimer--;
-    return;
-  }
-
-  // STATE: Finished stage
-  if(this.currentState === GameState.FinishedStage)
-  {
-    if(this.stageOutroTimer <= 0)
-    {
-      this.currentState = GameState.Playing;
-      return;
-    }
-
-    this.stageOutroTimer--;
     return;
   }
 
@@ -345,6 +338,12 @@ Game.prototype.handleMouseUp = function()
     return;
   }
 
+  if(this.currentState === GameState.FinishedStage)
+  {
+    this.advanceStage();
+    this.currentState = GameState.Playing;
+  }
+
   this.resetLine();
 }
 
@@ -452,7 +451,7 @@ Game.prototype.handleExtendLine = function(x, y) {
     {
       if(activeNodesCount === self.nodes.length)
       {
-        self.advanceStage();
+        self.currentState = GameState.FinishedStage;
       }
       else
       {
@@ -540,11 +539,11 @@ Game.prototype.draw = function()
     if(this.currentState === GameState.FinishedStage)
     {
       console.log("COMPLETE!");
-      return;
     }
 
   }
 
+  // Scanlines
   context.fillStyle = context.createPattern(self.scanLineImage, "repeat");
   context.fillRect(0, 0, self.canvasWidth, self.canvasHeight);
 

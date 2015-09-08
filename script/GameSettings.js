@@ -16,7 +16,6 @@ var GameSettings = {
 
   // Title Screen Timer Settings
   DayIntroTimerMax: 20,
-  StageOutroTimerMax: 10,
 
   // Score Settings
   StageScoreStart: 1000,

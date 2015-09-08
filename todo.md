@@ -1,6 +1,5 @@
 # TODO
 
-* Cap decreasing score at 0
 * Clear all messages between stages
 * Create Day 2 stages
 * Create Day 3 stages
