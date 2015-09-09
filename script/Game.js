@@ -3,7 +3,7 @@
  * @constructor
  * @param {HTMLCanvasElement} canvas  - Canvas for displaying the game
  */
-function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
+function Game(canvas, messageLogElement, replyButtonElement)
 {
   // Properties: Canvas
   this.canvas = canvas;
@@ -18,13 +18,11 @@ function Game(canvas, messageLogElement, replyButtonElement, pauseButtonElement)
   // Properties: DOM Elements
   this.messageLogElement = messageLogElement;
   this.replyButtonElement = replyButtonElement;
-  this.pauseButtonElement = pauseButtonElement;
 
   // Properties: User Events
   this.isMouseClicked = false;
   this.isMouseDown = false;
   this.mouseMovements = [];
-  this.isPauseButtonClicked = false;
   this.isReplyButtonPressed = false;
 
   // Properties: Game
@@ -204,7 +202,6 @@ Game.prototype.update = function()
   // Respond to user events
   this.handleMouseClick();
   this.handleMouseMove();
-  this.handlePauseButtonClick();
 
   // STATE: Starting day
   if(this.currentState === GameState.StartingDay)
@@ -219,7 +216,6 @@ Game.prototype.update = function()
     return;
   }
 
-  // STATE: Paused
   if(this.currentState != GameState.Playing)
   {
     return;
@@ -323,12 +319,6 @@ Game.prototype.handleMouseClick = function()
     this.loadStage(0, 0);
     return;
   }
-
-  if(this.currentState === GameState.Paused)
-  {
-    this.currentState = GameState.Playing;
-    return;
-  }
 }
 
 /**
@@ -353,29 +343,6 @@ Game.prototype.handleMouseUp = function()
   }
 
   this.resetLine();
-}
-
-/**
- * Checks if the user has clicked the pause button and updates the game's state
- * if applicable
- */
-Game.prototype.handlePauseButtonClick = function()
-{
-  if(!this.isPauseButtonClicked)
-  {
-    return;
-  }
-
-  this.isPauseButtonClicked = false;
-
-  if(this.currentState === GameState.Paused)
-  {
-    this.currentState = GameState.Playing;
-  }
-  else
-  {
-    this.currentState = GameState.Paused;
-  }
 }
 
 /**
@@ -489,12 +456,6 @@ Game.prototype.draw = function()
       GameSettings.Title.toUpperCase(),
       "Click screen to log onto system"
     );
-  }
-
-  // STATE: Pause Screen
-  else if(this.currentState === GameState.Paused)
-  {
-    this.drawTitleScreen('PAUSED');
   }
 
   // STATE: Level Interstitial
@@ -681,8 +642,6 @@ Game.prototype.start = function()
 
   self.replyButtonElement.addEventListener('mousedown', function() { self.isReplyButtonPressed = true; }, false);
   self.replyButtonElement.addEventListener('mouseup', function() { self.isReplyButtonPressed = false; }, false);
-
-  self.pauseButtonElement.addEventListener('click', function(mouseEvent) { self.isPauseButtonClicked = true; }, false);
 
   function loop()
   {
