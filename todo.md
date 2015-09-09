@@ -1,7 +1,5 @@
 # TODO
 
-* Clean up node styling
-
 * Style pause button
 * Style reset button
 * Style stage complete
