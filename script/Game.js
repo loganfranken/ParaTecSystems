@@ -66,6 +66,8 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.scanLineImage = new Image();
   this.scanLineImage.src = "images/scanlines.png";
 
+  this.isScoreEnabled = false;
+
 }
 
 /**
@@ -92,7 +94,10 @@ Game.prototype.resetStage = function()
   this.hasReplied = false;
 
   // Reset score
-  this.currentScore = GameSettings.StageScoreStart;
+  if(this.isScoreEnabled)
+  {
+    this.currentScore = GameSettings.StageScoreStart;
+  }
 }
 
 /**
@@ -113,7 +118,11 @@ Game.prototype.resetLine = function()
  */
 Game.prototype.advanceStage = function()
 {
-  this.totalScore += this.currentScore;
+  if(this.isScoreEnabled)
+  {
+    this.totalScore += this.currentScore;
+  }
+
   this.resetStage();
   this.currentStage++;
 
@@ -223,14 +232,17 @@ Game.prototype.update = function()
     return;
   }
 
-  // Update score
-  if(this.currentScore > 0)
+  if(this.isScoreEnabled)
   {
-    this.currentScore--;
-  }
-  else
-  {
-    this.currentScore = 0;
+    // Update score
+    if(this.currentScore > 0)
+    {
+      this.currentScore--;
+    }
+    else
+    {
+      this.currentScore = 0;
+    }
   }
 
   this.updateMessages();
@@ -504,21 +516,6 @@ Game.prototype.draw = function()
     context.fillStyle = GameSettings.DrawFieldBackgroundFillStyle;
     context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
-    // Reflect field
-    context.strokeStyle = GameSettings.ReflectFieldBorderStrokeStyle;
-    context.lineWidth = GameSettings.ReflectFieldBorderLineWidth;
-
-    context.beginPath();
-    context.moveTo(0, this.halfCanvasHeight);
-    context.lineTo(this.canvasWidth, this.halfCanvasHeight);
-
-    context.stroke();
-
-    // Score
-    context.fillStyle = GameSettings.DrawFieldTextFillStyle;
-    context.fillText("TOTAL SCORE: " + this.totalScore, 10, 20);
-    context.fillText("STAGE SCORE: " + this.currentScore, 10, 40);
-
     // Messages
     if(this.nextDisplayMessage)
     {
@@ -545,6 +542,30 @@ Game.prototype.draw = function()
       this.drawUserLine(true);
     }
 
+    // Reflect field
+    context.strokeStyle = GameSettings.ReflectFieldBorderStrokeStyle;
+    context.lineWidth = GameSettings.ReflectFieldBorderLineWidth;
+
+    context.beginPath();
+    context.moveTo(0, this.halfCanvasHeight);
+    context.lineTo(this.canvasWidth, this.halfCanvasHeight);
+
+    context.stroke();
+
+    if(this.isScoreEnabled)
+    {
+      // Score
+      context.fillStyle = GameSettings.DrawFieldTextFillStyle;
+      context.font = 'bold 1em monospace';
+
+      context.textAlign = 'right';
+      context.textBaseline = 'top';
+      context.fillText("TOTAL: " + this.totalScore, this.canvasWidth - 10, 10);
+
+      context.textAlign = 'left';
+      context.fillText("ASSIGNMENT: " + this.currentScore, 10, 10);
+    }
+
     // STATE: Level Interstitial
     if(this.currentState === GameState.FinishedStage)
     {
@@ -557,6 +578,7 @@ Game.prototype.draw = function()
 
       // Stage Complete Text
       context.textBaseline = 'middle';
+      context.textAlign = 'center';
       context.font = GameSettings.StageCompleteBannerFontStyle;
       context.fillStyle = GameSettings.StageCompleteBannerTextFillStyle;
       context.fillText("ASSIGNMENT COMPLETE", this.halfCanvasWidth, this.halfCanvasHeight);

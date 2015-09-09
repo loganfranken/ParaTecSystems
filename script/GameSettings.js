@@ -34,7 +34,7 @@ var GameSettings = {
 
   // Draw Field Settings
   DrawFieldBackgroundFillStyle: '#000',
-  DrawFieldTextFillStyle: '#000',
+  DrawFieldTextFillStyle: '#FFF',
 
   // Reflect Field Settings
   ReflectFieldBorderStrokeStyle: 'green',
