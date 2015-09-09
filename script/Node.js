@@ -24,6 +24,7 @@ function Node(nodeType, x, y, radius) {
  */
 Node.prototype.draw = function(context) {
 
+  // Draw: Base Color
   switch(this.type)
   {
     case NodeType.Start:
@@ -38,10 +39,49 @@ Node.prototype.draw = function(context) {
       context.fillStyle = GameSettings.NodeConnectFillStyle;
       break;
   }
-  
+
   context.beginPath();
   context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
   context.fill();
+
+  if(this.type === NodeType.End)
+  {
+    context.strokeStyle = '#000';
+    context.beginPath();
+    context.lineWidth = 5;
+
+    var radiusDiff = (this.radius - 15);
+
+    context.moveTo(this.x - radiusDiff, this.y - radiusDiff);
+    context.lineTo(this.x + radiusDiff, this.y + radiusDiff);
+
+    context.moveTo(this.x + radiusDiff, this.y - radiusDiff);
+    context.lineTo(this.x - radiusDiff, this.y + radiusDiff);
+
+    context.stroke();
+  }
+  else if(this.type === NodeType.Start)
+  {
+    context.strokeStyle = '#000';
+    context.lineWidth = 5;
+
+    context.beginPath();
+    context.arc(this.x, this.y, this.radius - 10, 0, 2 * Math.PI);
+    context.stroke();
+  }
+  else if(this.type === NodeType.Connect)
+  {
+    context.strokeStyle = '#000';
+    context.beginPath();
+    context.lineWidth = 5;
+
+    var radiusDiff = (this.radius - 10);
+
+    context.moveTo(this.x - radiusDiff, this.y);
+    context.lineTo(this.x + radiusDiff, this.y);
+
+    context.stroke();
+  }
 
 };
 

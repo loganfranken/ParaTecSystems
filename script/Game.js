@@ -587,7 +587,6 @@ Game.prototype.drawTitleScreen = function(title, subtitle)
   context.fillStyle = GameSettings.BackgroundFillStyle;
   context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
-
   context.textAlign = 'center';
   context.fillStyle = GameSettings.TextFillStyle;
 

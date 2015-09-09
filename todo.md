@@ -1,6 +1,18 @@
 # TODO
 
+* Style node inactive/active states
+* Clean up node styling
+
+* Style pause button
+* Style reset button
+* Style stage complete
+* Style day complete
+* Style game end screen
 * Clear all messages between stages
+* Thin out the level divider
+
+* Style the messages sidebar to make it clearer when new messages come in
+
 * Create Day 2 stages
 * Create Day 3 stages
 * Create Day 4 stages
@@ -10,4 +22,3 @@
 * Create Day 8 stages
 * Create Day 9 stages
 * Create Day 10 stages
-* Style nodes
