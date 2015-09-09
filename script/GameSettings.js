@@ -42,6 +42,13 @@ var GameSettings = {
 
   // Line Settings
   UserLineFillStyle: 'yellow',
-  UserLineWidth: 5
+  UserLineWidth: 5,
+
+  // Stage Complete Banner Settings
+  StageCompleteBannerBackgroundFillStyle: '#111',
+  StageCompleteBannerWidthOffsetPercentage: 0.2,
+  StageCompleteBannerHeightPercentage: 0.1,
+  StageCompleteBannerFontStyle: 'bold 2em monospace',
+  StageCompleteBannerTextFillStyle: 'green'
 
 };

@@ -506,7 +506,7 @@ Game.prototype.draw = function()
 
     // Draw field
     context.fillStyle = GameSettings.DrawFieldBackgroundFillStyle;
-    context.fillRect(0, 0, this.canvasWidth, this.halfCanvasHeight);
+    context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
     // Reflect field
     context.strokeStyle = GameSettings.ReflectFieldBorderStrokeStyle;
@@ -549,7 +549,18 @@ Game.prototype.draw = function()
     // STATE: Level Interstitial
     if(this.currentState === GameState.FinishedStage)
     {
-      console.log("COMPLETE!");
+      var widthOffset = this.canvasWidth * GameSettings.StageCompleteBannerWidthOffsetPercentage;
+      var height = this.canvasHeight * GameSettings.StageCompleteBannerHeightPercentage;
+
+      // Stage Complete Banner
+      context.fillStyle = GameSettings.StageCompleteBannerBackgroundFillStyle;
+      context.fillRect(0 + widthOffset, this.halfCanvasHeight - (height/2), this.canvasWidth - (widthOffset * 2), height);
+
+      // Stage Complete Text
+      context.textBaseline = 'middle';
+      context.font = GameSettings.StageCompleteBannerFontStyle;
+      context.fillStyle = GameSettings.StageCompleteBannerTextFillStyle;
+      context.fillText("ASSIGNMENT COMPLETE", this.halfCanvasWidth, this.halfCanvasHeight);
     }
 
   }

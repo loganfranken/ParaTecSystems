@@ -1,12 +1,12 @@
 # TODO
 
-* Style pause button
-* Style reset button
 * Style stage complete
 * Style day complete
 * Style game end screen
 * Clear all messages between stages
 * Thin out the level divider
+* Enable pause button
+* Enable reset button
 
 * Style the messages sidebar to make it clearer when new messages come in
 
