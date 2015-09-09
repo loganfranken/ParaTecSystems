@@ -16,6 +16,13 @@ function Node(nodeType, x, y, radius) {
   this.radius = radius;
   this.radiusSquared = (this.radius * this.radius);
 
+  this.isActive = false;
+
+  if(nodeType === NodeType.Start)
+  {
+    this.isActive = true;
+  }
+
 }
 
 /**
@@ -28,15 +35,15 @@ Node.prototype.draw = function(context) {
   switch(this.type)
   {
     case NodeType.Start:
-      context.fillStyle = GameSettings.NodeStartFillStyle;
+      context.fillStyle = (this.isActive) ? GameSettings.NodeStartFillStyle : GameSettings.NodeInactiveFillStyle;
       break;
 
     case NodeType.End:
-      context.fillStyle = GameSettings.NodeEndFillStyle;
+      context.fillStyle = (this.isActive) ? GameSettings.NodeEndFillStyle : GameSettings.NodeInactiveFillStyle;
       break;
 
     case NodeType.Connect:
-      context.fillStyle = GameSettings.NodeConnectFillStyle;
+      context.fillStyle = (this.isActive) ? GameSettings.NodeConnectFillStyle : GameSettings.NodeInactiveFillStyle;
       break;
   }
 

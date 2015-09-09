@@ -102,6 +102,10 @@ Game.prototype.resetLine = function()
 {
   this.linePoints = [];
   this.activeNodes = [];
+
+  this.nodes.forEach(function(node, i) {
+    node.isActive = false;
+  });
 }
 
 /**
@@ -430,6 +434,7 @@ Game.prototype.handleExtendLine = function(x, y) {
 
       if(node.contains(x, y) || node.contains(reflectX, reflectY)) {
         self.activeNodes[i] = true;
+        node.isActive = true;
       }
 
     });

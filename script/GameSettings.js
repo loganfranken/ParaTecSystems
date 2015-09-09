@@ -10,6 +10,7 @@ var GameSettings = {
   NodeStartFillStyle: 'green',
   NodeEndFillStyle: 'red',
   NodeConnectFillStyle: 'blue',
+  NodeInactiveFillStyle: '#333',
 
   // Message Settings
   ReplyTimerMax: 10,
