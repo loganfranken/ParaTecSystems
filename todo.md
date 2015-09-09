@@ -1,6 +1,5 @@
 # TODO
 
-* Style node inactive/active states
 * Clean up node styling
 
 * Style pause button

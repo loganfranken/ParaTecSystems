@@ -7,10 +7,15 @@ var GameSettings = {
 
   // Node Settings
   NodeRadiusPercentage: 0.02,
+  NodeEmblemLineWidthPercentage: 0.15,
+  NodeEndEmblemMarginPercentage: 0.50,
+  NodeStartEmblemMarginPercentage: 0.40,
+  NodeConnectEmblemMarginPercentage: 0.60,
   NodeStartFillStyle: 'green',
   NodeEndFillStyle: 'red',
   NodeConnectFillStyle: 'blue',
   NodeInactiveFillStyle: '#333',
+  NodeEmblemFillStyle: '#000',
 
   // Message Settings
   ReplyTimerMax: 10,
