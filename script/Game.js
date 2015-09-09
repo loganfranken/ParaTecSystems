@@ -119,7 +119,7 @@ Game.prototype.advanceStage = function()
 
   var dayStages = stages[this.currentDay];
 
-  if(this.currentStage > dayStages.length)
+  if(this.currentStage > dayStages.length - 1)
   {
     this.currentState = GameState.StartingDay;
     this.dayIntroTimer = GameSettings.DayIntroTimerMax;
@@ -345,7 +345,11 @@ Game.prototype.handleMouseUp = function()
   if(this.currentState === GameState.FinishedStage)
   {
     this.advanceStage();
-    this.currentState = GameState.Playing;
+
+    if(this.currentState === GameState.FinishedStage)
+    {
+      this.currentState = GameState.Playing;
+    }
   }
 
   this.resetLine();
@@ -496,6 +500,7 @@ Game.prototype.draw = function()
   // STATE: Level Interstitial
   else if(this.currentState === GameState.StartingDay)
   {
+    this.clearDrawnMessages();
     this.drawTitleScreen(
       "Loading Daily Assignments",
       new Date(1988, 3, 15 + this.currentDay).toDateString()
