@@ -1,12 +1,5 @@
 # TODO
 
-* Thin out the level divider
-* Enable pause button
-* Enable reset button
-* Style paused screen
-
-* Style the messages sidebar to make it clearer when new messages come in
-
 * Create Day 2 stages
 * Create Day 3 stages
 * Create Day 4 stages
