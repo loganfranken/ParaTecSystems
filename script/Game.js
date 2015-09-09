@@ -55,6 +55,8 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.replyTimer = 0;
   this.replyCount = 0;
   this.hasReplied = false;
+  this.isReplyButtonEnabled = false;
+  this.isReplyButtonActive = false;
 
   // Properties: Score
   this.currentScore = 0;
@@ -240,7 +242,7 @@ Game.prototype.update = function()
  */
 Game.prototype.updateMessages = function()
 {
-  if(!this.isReplyOptionActive)
+  if(!this.isReplyButtonPressed)
   {
     this.replyTimer = 0;
   }
@@ -272,17 +274,45 @@ Game.prototype.updateMessages = function()
   // CHECK: Previous message reply
   var prevMessage = levelMessages[this.currentMessageIndex - 1];
 
-  if(prevMessage && prevMessage.awaitReply && !this.hasReplied)
+  if(prevMessage && prevMessage.awaitReply)
   {
-    if(this.isReplyOptionActive)
+    if(!this.isReplyButtonEnabled && !this.hasReplied)
     {
-      this.replyTimer++;
+      this.enableReplyButton();
     }
 
-    if(this.replyTimer > this.replyTimerMax)
+    if(!this.hasReplied)
     {
-      this.replyCount++;
-      this.hasReplied = true;
+      if(this.isReplyButtonPressed)
+      {
+        this.replyTimer++;
+
+        var remainingReplyTimer = (GameSettings.ReplyTimerMax - this.replyTimer);
+
+        if(remainingReplyTimer < 0)
+        {
+          remainingReplyTimer = 0;
+        }
+
+        this.updateReplyButtonText('HOLD FOR ' + remainingReplyTimer);
+      }
+
+      if(this.replyTimer > GameSettings.ReplyTimerMax)
+      {
+        // User has replied, register the reply
+        this.replyCount++;
+        this.hasReplied = true;
+        this.disableReplyButton();
+        this.resetReplyButtonText();
+        this.nextDisplayMessage = prevMessage.replyMessage;
+      }
+    }
+  }
+  else
+  {
+    if(this.isReplyButtonEnabled)
+    {
+      this.disableReplyButton();
     }
   }
 
@@ -635,16 +665,25 @@ Game.prototype.drawUserLine = function(isReflected)
 Game.prototype.enableReplyButton = function()
 {
   this.replyButtonElement.className = 'button';
+  this.isReplyButtonEnabled = true;
 }
 
 Game.prototype.disableReplyButton = function()
 {
   this.replyButtonElement.className = 'button disabled';
+  this.isReplyButtonEnabled = false;
 }
 
 Game.prototype.activateReplyButton = function()
 {
   this.replyButtonElement.className = 'button active';
+  this.isReplyButtonActive = true;
+}
+
+Game.prototype.deactivateReplyButton = function()
+{
+  this.replyButtonElement.className = 'button';
+  this.isReplyButtonActive = false;
 }
 
 Game.prototype.updateReplyButtonText = function(text)
