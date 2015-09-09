@@ -509,8 +509,11 @@ Game.prototype.draw = function()
     // Draw the user's line
     this.drawUserLine(false);
 
-    // Draw the reverse of the user's line
-    this.drawUserLine(true);
+    if(this.currentDay > 0)
+    {
+      // Draw the reverse of the user's line
+      this.drawUserLine(true);
+    }
 
     // STATE: Level Interstitial
     if(this.currentState === GameState.FinishedStage)
@@ -595,6 +598,7 @@ Game.prototype.drawTitleScreen = function(title, subtitle)
  */
 Game.prototype.drawUserLine = function(isReflected)
 {
+  var self = this;
   var context = this.context;
 
   context.strokeStyle = GameSettings.UserLineFillStyle;
