@@ -628,6 +628,31 @@ Game.prototype.drawUserLine = function(isReflected)
   context.stroke();
 }
 
+Game.prototype.enableReplyButton = function()
+{
+  this.replyButtonElement.className = 'button';
+}
+
+Game.prototype.disableReplyButton = function()
+{
+  this.replyButtonElement.className = 'button disabled';
+}
+
+Game.prototype.activateReplyButton = function()
+{
+  this.replyButtonElement.className = 'button active';
+}
+
+Game.prototype.updateReplyButtonText = function(text)
+{
+  this.replyButtonElement.innerHTML = text;
+}
+
+Game.prototype.resetReplyButtonText = function()
+{
+  this.replyButtonElement.innerHTML = 'Reply';
+}
+
 /**
  * Starts the game
  */

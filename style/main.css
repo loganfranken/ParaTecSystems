@@ -96,3 +96,11 @@ canvas
   background: green;
   color: #000;
 }
+
+.button.disabled
+{
+  background: #000;
+  border-color: #333;
+  color: #333;
+  cursor: default;
+}
