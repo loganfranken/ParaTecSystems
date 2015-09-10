@@ -52,6 +52,16 @@ messages[1][3] = [
   { speaker: 'Otto', content: "Alright, I'll leave you to it", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } },
 ];
 
+messages[2] = [];
+
+/* Day 3, Stage 0 */
+messages[2][0] = [
+  { speaker: 'Otto', content: "We're turning on scoring for you now" },
+  { speaker: 'Otto', content: "The faster you go, the higher your score", delay: 10 },
+  { speaker: 'Otto', content: "Don't let it freak you out, though, okay?", delay: 10 },
+  { speaker: 'Otto', content: "You're doing just fine", delay: 10 }
+];
+
 /*
 messages[1] = [
   { content: 'This is message for level 2!' },

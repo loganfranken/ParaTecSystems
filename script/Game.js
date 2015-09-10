@@ -125,7 +125,6 @@ Game.prototype.advanceStage = function()
     this.totalScore += this.currentScore;
   }
 
-  this.resetStage();
   this.currentStage++;
 
   var dayStages = stages[this.currentDay];
@@ -143,6 +142,12 @@ Game.prototype.advanceStage = function()
     this.currentState = GameState.FinishedStage;
   }
 
+  if(this.currentDay > 1)
+  {
+    this.isScoreEnabled = true;
+  }
+
+  this.resetStage();
   this.loadStage(this.currentDay, this.currentStage);
 }
 
@@ -357,7 +362,7 @@ Game.prototype.updateMessages = function()
     }
     else
     {
-      this.repliedToLastMessage = false;  
+      this.repliedToLastMessage = false;
     }
   }
   else
