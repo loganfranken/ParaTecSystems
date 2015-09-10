@@ -69,6 +69,7 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.scanLineImage.src = "images/scanlines.png";
 
   this.isScoreEnabled = false;
+  this.isReflectedLineEnabled = true;
 
 }
 
@@ -140,6 +141,11 @@ Game.prototype.advanceStage = function()
   else
   {
     this.currentState = GameState.FinishedStage;
+  }
+
+  if(this.currentDay > 0)
+  {
+    this.isReflectedLineEnabled = true;
   }
 
   if(this.currentDay > 1)
@@ -571,7 +577,7 @@ Game.prototype.draw = function()
     // Draw the user's line
     this.drawUserLine(false);
 
-    if(this.currentDay > 0)
+    if(this.isReflectedLineEnabled)
     {
       // Draw the reverse of the user's line
       this.drawUserLine(true);
