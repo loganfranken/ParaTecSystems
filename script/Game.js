@@ -56,6 +56,7 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.replyTimer = 0;
   this.replyCount = 0;
   this.hasReplied = false;
+  this.repliedToLastMessage = false;
   this.isReplyButtonEnabled = false;
   this.isReplyButtonActive = false;
 
@@ -352,6 +353,11 @@ Game.prototype.updateMessages = function()
       this.disableReplyButton();
       this.resetReplyButtonText();
       this.nextDisplayMessage = currMessage.replyMessage;
+      this.repliedToLastMessage = true;
+    }
+    else
+    {
+      this.repliedToLastMessage = false;  
     }
   }
   else
