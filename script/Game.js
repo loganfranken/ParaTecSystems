@@ -260,7 +260,7 @@ Game.prototype.updateMessages = function()
   }
 
   // Display chat messages
-  var levelMessages = messages[this.currentStage];
+  var levelMessages = messages[this.currentDay][this.currentStage];
 
   if(!levelMessages)
   {
@@ -273,7 +273,7 @@ Game.prototype.updateMessages = function()
     return;
   }
 
-  var currMessage = levelMessages[this.currentDay][this.currentMessageIndex];
+  var currMessage = levelMessages[this.currentMessageIndex];
 
   // CHECK: Current message display condition
   if(currMessage.condition && !currMessage.condition(game))

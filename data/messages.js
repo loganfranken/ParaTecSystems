@@ -5,24 +5,29 @@ messages[0] = [];
 /* Day 1, Stage 0 */
 messages[0][0] = [
   { speaker: 'Otto', content: "Good morning! First day, right?", delay: 10 },
-  { speaker: 'Otto', content: "I'm Otto, I'll be training you today and tomorrow.", delay: 40 },
-  { speaker: 'Otto', content: "Let's get started.", delay: 40 },
-  { speaker: 'Otto', content: "Draw a line from the start node to the end node.", delay: 40 }
+  { speaker: 'Otto', content: "I'm Otto, I'll be training you", delay: 30 },
+  { speaker: 'Otto', content: "Let's get started", delay: 30 },
+  { speaker: 'Otto', content: "Draw a line from the start node to the end node", delay: 30 }
 ];
 
 /* Day 1, Stage 1 */
 messages[0][1] = [
-  { speaker: 'Otto', content: "Great! You're a natural." },
+  { speaker: 'Otto', content: "Great! You're a natural" },
 ];
 
-/* Day 2, Stage 2 */
+/* Day 1, Stage 2 */
 messages[0][2] = [
-  { speaker: 'Otto', content: "Make sure your line goes through any connecting nodes too." },
+  { speaker: 'Otto', content: "Make sure your line goes through any connecting nodes too" },
 ];
 
-/* Day 2, Stage 2 */
+/* Day 1, Stage 4 */
 messages[0][4] = [
-  { speaker: 'Otto', content: "And watch out for the blocks." },
+  { speaker: 'Otto', content: "And watch out for the blocks" },
+];
+
+/* Day 1, Stage 6 */
+messages[0][6] = [
+  { speaker: 'Otto', content: "Last one for today, see you tomorrow" },
 ];
 
 /*
