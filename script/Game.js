@@ -547,7 +547,7 @@ Game.prototype.draw = function()
     this.clearDrawnMessages();
     this.drawTitleScreen(
       "Loading Daily Assignments",
-      new Date(1988, 3, 15 + this.currentDay).toDateString()
+      new Date(1988, 3, 11 + this.currentDay).toDateString()
     );
   }
 
