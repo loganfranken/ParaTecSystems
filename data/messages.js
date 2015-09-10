@@ -5,7 +5,7 @@ messages[0] = [];
 /* Day 1, Stage 0 */
 messages[0][0] = [
   { speaker: 'Otto', content: "Good morning! First day, right?", delay: 10 },
-  { speaker: 'Otto', content: "I'm Otto, I'll be training you", delay: 30 },
+  { speaker: 'Otto', content: "I'm Otto, I'll be training you this week", delay: 30 },
   { speaker: 'Otto', content: "Let's get started", delay: 30 },
   { speaker: 'Otto', content: "Draw a line from the start node to the end node", delay: 30 }
 ];
