@@ -1,6 +1,5 @@
 # TODO
 
-* Create Day 2 stages
 * Create Day 3 stages
 * Create Day 4 stages
 * Create Day 5 stages

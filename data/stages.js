@@ -13,6 +13,7 @@ var stages = [
 
   // Day 2 (Introduce reverse mechanic, reply mechanic)
   [
+    /* Working */ '',
     /* Stage 0 */ 'S(10,25);E(90,25)',
     /* Stage 1 */ //'S(10,25);E(10,75)',
     /* Stage 2 */ //'S(10,25);E(10,75);C(50,60)',
@@ -24,8 +25,8 @@ var stages = [
 
   // Day 3 (Introduce scoring)
   [
-    /* Stage 0 */ 'S(10,25);E(90,25)',
-    /* Stage 1 */ 'S(10,25);E(90,25)',
+    /* Stage 0 */ 'S(10,25);E(10,75)',
+    /* Stage 1 */ 'S(10,25);E(70,75);C(25,25);C(35,25);C(45,25);C(55,25);C(65,25)',
     '',
     '',
     '',
