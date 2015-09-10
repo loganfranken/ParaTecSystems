@@ -61,13 +61,3 @@ messages[2][0] = [
   { speaker: 'Otto', content: "Don't let it freak you out, though, okay?", delay: 10 },
   { speaker: 'Otto', content: "You're doing just fine", delay: 10 }
 ];
-
-/*
-messages[1] = [
-  { content: 'This is message for level 2!' },
-  {
-    content: 'This message only displays if you replied earlier!',
-    condition: function(game) { return game.replyCount > 0; }
-  }
-];
-*/
