@@ -50,6 +50,7 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.nextDisplayMessage = null;
   this.currentMessageIndex = 0;
   this.messageTimer = 0;
+  this.hasStagedMessage = 0;
 
   // Properties: Message Replies
   this.replyTimer = 0;
@@ -257,6 +258,8 @@ Game.prototype.updateMessages = function()
   if(!this.isReplyButtonPressed)
   {
     this.replyTimer = 0;
+    this.disableReplyButton();
+    this.resetReplyButtonText();
   }
 
   // Display chat messages
@@ -275,12 +278,6 @@ Game.prototype.updateMessages = function()
 
   var currMessage = levelMessages[this.currentMessageIndex];
 
-  if(currMessage.isPlaceholder)
-  {
-    this.currentMessageIndex++;
-    return;
-  }
-
   // CHECK: Current message display condition
   if(currMessage.condition && !currMessage.condition(game))
   {
@@ -289,41 +286,72 @@ Game.prototype.updateMessages = function()
     return;
   }
 
-  // CHECK: Previous message reply
-  var prevMessage = levelMessages[this.currentMessageIndex - 1];
-
-  if(prevMessage && prevMessage.awaitReply)
+  if(this.hasReplied)
   {
-    if(!this.isReplyButtonEnabled && !this.hasReplied)
+      this.messageTimer = 0;
+      this.currentMessageIndex++;
+      this.hasReplied = false;
+      this.hasStagedMessage = false;
+      return;
+  }
+
+  if(!this.hasStagedMessage && (!currMessage.delay || this.messageTimer >= currMessage.delay))
+  {
+    // Prepare the message for display
+    this.nextDisplayMessage = currMessage;
+    this.hasStagedMessage = true;
+
+    if(!currMessage.awaitReply)
+    {
+      this.messageTimer = 0;
+      this.currentMessageIndex++;
+      this.hasReplied = false;
+      this.hasStagedMessage = false;
+    }
+
+    return;
+  }
+
+  if(this.hasStagedMessage && currMessage.awaitReply && !this.hasReplied)
+  {
+    if(!this.isReplyButtonEnabled)
     {
       this.enableReplyButton();
     }
 
-    if(!this.hasReplied)
+    if(this.isReplyButtonPressed)
     {
-      if(this.isReplyButtonPressed)
+      this.replyTimer++;
+
+      var remainingReplyTimer = (GameSettings.ReplyTimerMax - this.replyTimer);
+
+      if(remainingReplyTimer < 0)
       {
-        this.replyTimer++;
-
-        var remainingReplyTimer = (GameSettings.ReplyTimerMax - this.replyTimer);
-
-        if(remainingReplyTimer < 0)
-        {
-          remainingReplyTimer = 0;
-        }
-
-        this.updateReplyButtonText('HOLD FOR ' + remainingReplyTimer);
+        remainingReplyTimer = 0;
       }
 
-      if(this.replyTimer > GameSettings.ReplyTimerMax)
-      {
-        // User has replied, register the reply
-        this.replyCount++;
-        this.hasReplied = true;
-        this.disableReplyButton();
-        this.resetReplyButtonText();
-        this.nextDisplayMessage = prevMessage.replyMessage;
-      }
+      this.updateReplyButtonText('HOLD FOR ' + remainingReplyTimer);
+    }
+
+    if(this.messageTimer >= currMessage.replyDelay)
+    {
+      this.messageTimer = 0;
+      this.currentMessageIndex++;
+      this.hasReplied = false;
+      this.hasStagedMessage = false;
+      this.disableReplyButton();
+      this.resetReplyButtonText();
+      return;
+    }
+
+    if(this.replyTimer > GameSettings.ReplyTimerMax)
+    {
+      // User has replied, register the reply
+      this.replyCount++;
+      this.hasReplied = true;
+      this.disableReplyButton();
+      this.resetReplyButtonText();
+      this.nextDisplayMessage = currMessage.replyMessage;
     }
   }
   else
@@ -332,16 +360,6 @@ Game.prototype.updateMessages = function()
     {
       this.disableReplyButton();
     }
-  }
-
-  if(!currMessage.delay || this.messageTimer >= currMessage.delay)
-  {
-    // Prepare the message for display
-    this.nextDisplayMessage = currMessage;
-    this.messageTimer = 0;
-    this.currentMessageIndex++;
-    this.hasReplied = false;
-    return;
   }
 
   this.messageTimer++;
