@@ -284,7 +284,7 @@ Game.prototype.updateMessages = function()
   }
 
   // CHECK: Previous message reply
-  var prevMessage = levelMessages[this.currentDay][this.currentMessageIndex - 1];
+  var prevMessage = levelMessages[this.currentMessageIndex - 1];
 
   if(prevMessage && prevMessage.awaitReply)
   {

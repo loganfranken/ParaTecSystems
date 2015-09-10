@@ -30,6 +30,28 @@ messages[0][6] = [
   { speaker: 'Otto', content: "Last one for today, see you tomorrow" },
 ];
 
+messages[1] = [];
+
+/* Day 2, Stage 0 */
+messages[1][0] = [
+  { speaker: 'Otto', content: "Alright, big day for you" },
+  { speaker: 'Otto', content: "We're turning on your bottom screen", delay: 20 },
+];
+
+/* Day 2, Stage 1 */
+messages[1][1] = [
+  { speaker: 'Otto', content: "Don't worry, you got this" },
+];
+
+/* Day 2, Stage 3 */
+messages[1][3] = [
+  { speaker: 'Otto', content: "How are you?" },
+  { speaker: 'Otto', content: "Hold 'Reply' to respond", delay: 10 },
+  { speaker: 'Otto', content: "(If you want)", delay: 10, awaitReply: true, replyMessage: { speaker: 'You', content: "Doing just fine" } },
+  { speaker: 'Otto', content: "Alright, I'll leave you to it", condition: function(game) { return game.replyCount > 1; } },
+  { speaker: 'Otto', content: "Hey, glad to hear it", condition: function(game) { return game.replyCount > 1; } }
+];
+
 /*
 messages[1] = [
   { content: 'This is message for level 2!' },
