@@ -48,6 +48,7 @@ messages[1][3] = [
   { speaker: 'Otto', content: "How are you?" },
   { speaker: 'Otto', content: "Hold 'Reply' to respond", delay: 10 },
   { speaker: 'Otto', content: "(If you want)", delay: 10, awaitReply: true, replyMessage: { speaker: 'You', content: "Doing just fine" } },
+  { isPlaceholder: true, delay: 50 },
   { speaker: 'Otto', content: "Alright, I'll leave you to it", condition: function(game) { return game.replyCount > 1; } },
   { speaker: 'Otto', content: "Hey, glad to hear it", condition: function(game) { return game.replyCount > 1; } }
 ];

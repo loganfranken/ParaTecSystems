@@ -275,6 +275,12 @@ Game.prototype.updateMessages = function()
 
   var currMessage = levelMessages[this.currentMessageIndex];
 
+  if(currMessage.isPlaceholder)
+  {
+    this.currentMessageIndex++;
+    return;
+  }
+
   // CHECK: Current message display condition
   if(currMessage.condition && !currMessage.condition(game))
   {
