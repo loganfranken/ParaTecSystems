@@ -67,11 +67,19 @@ messages[2][3] = [
   { speaker: 'Otto', content: "Be honest" },
   { speaker: 'Otto', content: "Is the score kind of freaking you out?", delay: 10, awaitReply: true, replyDelay: 70, replyMessage: { speaker: 'You', content: "It's alright" } },
   { speaker: 'Otto', content: "Dang, you're a champ", delay: 10, condition: function(game) { return game.repliedToLastMessage; } },
-  { speaker: 'Otto', content: "You're kind of serious, huh?", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } }
+  { speaker: 'Otto', content: "Well, don't let it freak you out if it is", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } }
 ];
 
 /* Day 3, Stage 5 */
 messages[2][5] = [
   { speaker: 'ParaTec', content: "Your performance is unsatisfactory. Please try harder tomorrow.", condition: function(game) { return game.totalScore < 800; } },
   { speaker: 'ParaTec', content: "We are pleased with your performance. You are a star member of the ParaTec family.", condition: function(game) { return game.totalScore >= 800; } },
+];
+
+/* Day 4, Stage 3 */
+messages[3][3] = [
+  { speaker: 'Otto', content: "Hey, I know this is tough work" },
+  { speaker: 'Otto', content: "But you're doing really well", delay: 10 },
+  { speaker: 'Otto', content: "Aww, no problem", delay: 10, condition: function(game) { return game.repliedToLastMessage; } },
+  { speaker: 'Otto', content: "You'll do great here", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } }
 ];
