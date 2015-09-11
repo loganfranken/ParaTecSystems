@@ -718,16 +718,16 @@ Game.prototype.drawEndScreen = function()
   context.fillText("END OF FIRST WEEK", this.halfCanvasWidth, this.halfCanvasHeight);
 
   // Results
-  var resultText = "FINAL SCORE: " + this.totalScore + "\n";
+  var resultText = "FINAL SCORE: " + this.totalScore;
 
   if(this.replyCount > 2)
   {
-    resultText += "OTTO SAYS HI";
+    resultText += " (OTTO SAYS HI)";
   }
 
   context.textBaseline = 'middle';
   context.font = GameSettings.TitleScreenFontStyle;
-  context.fillText(resultText, this.halfCanvasWidth, this.halfCanvasHeight + 100);
+  context.fillText(resultText, this.halfCanvasWidth, this.halfCanvasHeight + 80);
 }
 
 /**

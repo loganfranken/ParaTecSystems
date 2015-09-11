@@ -1,6 +1,10 @@
 var messages = [];
 
 messages[0] = [];
+messages[1] = [];
+messages[2] = [];
+messages[3] = [];
+messages[4] = [];
 
 /* Day 1, Stage 0 */
 messages[0][0] = [
@@ -30,8 +34,6 @@ messages[0][5] = [
   { speaker: 'Otto', content: "Last one for today, see you tomorrow" },
 ];
 
-messages[1] = [];
-
 /* Day 2, Stage 0 */
 messages[1][0] = [
   { speaker: 'Otto', content: "Alright, big day for you" },
@@ -51,8 +53,6 @@ messages[1][3] = [
   { speaker: 'Otto', content: "Hey, glad to hear it", delay: 10, condition: function(game) { return game.repliedToLastMessage; } },
   { speaker: 'Otto', content: "Alright, I'll leave you to it", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } },
 ];
-
-messages[2] = [];
 
 /* Day 3, Stage 0 */
 messages[2][0] = [
@@ -96,8 +96,8 @@ messages[4][0] = [
   { speaker: 'Otto', content: "Come grab a beer with us after work tonight", delay: 10, condition: function(game) { return game.replyCount > 2; } }
 ];
 
-/* Day 4, Stage 5 */
-messages[5][5] = [
+/* Day 5, Stage 5 */
+messages[4][5] = [
   { speaker: 'ParaTec', content: "Your peformance has been adequate this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore < 3400; } },
   { speaker: 'ParaTec', content: "Your performance has been exceptional this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore >= 3400; } },
 ];
