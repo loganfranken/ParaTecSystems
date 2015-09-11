@@ -1,11 +1,11 @@
 var stages = [
 
-  // 11 stages left to make
+  // 10 stages left to make
   // A stage w/ evenly spaced blocks across the entire playing field
 
   // Day 1 (Basic mechanics w/o reverse)
   [
-    /* DRAFT STAGE */ 'S(10,10);E(90,10);C(10,30);B(0,20,60,5);B(70,20,30,5);B(0,60,20,5);B(30,60,40,5);B(80,60,20,5);B(55,20,5,25)',
+    /* DRAFT STAGE */ 'S(10,25);E(90,25);C(50,25);B(25,65,10,20);B(65,65,10,20)',
     /* Stage 0 */ 'S(10,25);E(90,25)',
     /* Stage 1 */ 'S(90,15);E(10,35)',
     /* Stage 2 */ 'S(10,35);E(90,15);C(50,25)',
@@ -50,8 +50,8 @@ var stages = [
 
   // Day 5 (Results of the reply)
   [
-    /* Stage 0 */ 'S(10,10);E(90,10);C(10,30);B(0,20,60,5);B(70,20,30,5);B(0,60,20,5);B(30,60,40,5);B(80,60,20,5);B(55,20,5,25)',
-    /* Stage 1 */ '',
+    /* Stage 0 */ 'S(10,25);E(90,25);C(50,25);B(25,65,10,20);B(65,65,10,20)',
+    /* Stage 1 */ 'S(10,10);E(90,10);C(10,30);B(0,20,60,5);B(70,20,30,5);B(0,60,20,5);B(30,60,40,5);B(80,60,20,5);B(55,20,5,25)',
     /* Stage 2 */ '',
     /* Stage 3 */ '',
     /* Stage 4 */ '',
