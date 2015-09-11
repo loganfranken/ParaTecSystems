@@ -1,6 +1,6 @@
 var stages = [
 
-  // 8 stages left to make
+  // 7 stages left to make
 
   // Day 1 (Basic mechanics w/o reverse)
   [
@@ -50,7 +50,7 @@ var stages = [
   // Day 5 (Results of the reply)
   [
     /* Stage 0 */ 'S(10,25);E(90,25);C(50,25);B(25,65,10,20);B(65,65,10,20)',
-    /* Stage 1 */ '',
+    /* Stage 1 */ 'S(10,25);E(10,75);B(30,5,5,30);B(30,5,40,5);B(30,55,40,5);B(30,55,5,30);C(40,20);C(45,30);C(40,70);C(45,80)',
     /* Stage 2 */ '',
     /* Stage 3 */ '',
     /* Stage 4 */ '',
