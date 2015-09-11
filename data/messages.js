@@ -76,7 +76,6 @@ messages[2][5] = [
   { speaker: 'ParaTec', content: "We are pleased with your performance. You are a star member of the ParaTec family.", condition: function(game) { return game.totalScore >= 4500; } },
 ];
 
-//
 /* Day 4, Stage 3 */
 messages[3][3] = [
   { speaker: 'Otto', content: "Hey, I know this is tough work" },
@@ -85,21 +84,18 @@ messages[3][3] = [
   { speaker: 'Otto', content: "You'll do great here", delay: 20, condition: function(game) { return !game.repliedToLastMessage; } }
 ];
 
-//
 /* Day 4, Stage 5 */
 messages[3][5] = [
   { speaker: 'ParaTec', content: "Your performance is unsatisfactory. Please try harder tomorrow.", condition: function(game) { return game.totalScore < 10000; } },
   { speaker: 'ParaTec', content: "We are pleased with your performance. You are a star member of the ParaTec family.", condition: function(game) { return game.totalScore >= 10000; } },
 ];
 
-//
 /* Day 5, Stage 0 */
 messages[4][0] = [
   { speaker: 'Otto', content: "Last day of your first week!" },
   { speaker: 'Otto', content: "Come grab a beer with us after work tonight", delay: 20, condition: function(game) { return game.replyCount > 2; } }
 ];
 
-//
 /* Day 5, Stage 5 */
 messages[4][5] = [
   { speaker: 'ParaTec', content: "Your peformance has been adequate this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore < 200000; } },

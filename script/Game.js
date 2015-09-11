@@ -70,7 +70,7 @@ function Game(canvas, messageLogElement, replyButtonElement)
 
   // Properties: Stage Progression
   this.isScoreEnabled = false;
-  this.isReflectedLineEnabled = true;
+  this.isReflectedLineEnabled = false;
 }
 
 /**
