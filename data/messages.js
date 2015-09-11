@@ -26,7 +26,7 @@ messages[0][4] = [
 ];
 
 /* Day 1, Stage 6 */
-messages[0][6] = [
+messages[0][5] = [
   { speaker: 'Otto', content: "Last one for today, see you tomorrow" },
 ];
 
@@ -45,7 +45,7 @@ messages[1][1] = [
 
 /* Day 2, Stage 3 */
 messages[1][3] = [
-  { speaker: 'Otto', content: "How are you?" },
+  { speaker: 'Otto', content: "Hey, how are you doing?" },
   { speaker: 'Otto', content: "Hold 'Reply' to respond", delay: 10 },
   { speaker: 'Otto', content: "(If you want)", delay: 10, awaitReply: true, replyDelay: 100, replyMessage: { speaker: 'You', content: "Doing just fine" } },
   { speaker: 'Otto', content: "Hey, glad to hear it", delay: 10, condition: function(game) { return game.repliedToLastMessage; } },
@@ -60,4 +60,12 @@ messages[2][0] = [
   { speaker: 'Otto', content: "The faster you go, the higher your score", delay: 10 },
   { speaker: 'Otto', content: "Don't let it freak you out, though, okay?", delay: 10 },
   { speaker: 'Otto', content: "You're doing just fine", delay: 10 }
+];
+
+/* Day 3, Stage 2 */
+messages[2][3] = [
+  { speaker: 'Otto', content: "Be honest" },
+  { speaker: 'Otto', content: "Is the score kind of freaking you out?", delay: 10, awaitReply: true, replyDelay: 70, replyMessage: { speaker: 'You', content: "It's alright" } },
+  { speaker: 'Otto', content: "Dang, you're a champ", delay: 10, condition: function(game) { return game.repliedToLastMessage; } },
+  { speaker: 'Otto', content: "You're kind of serious, huh?", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } }
 ];
