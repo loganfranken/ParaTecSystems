@@ -121,6 +121,17 @@ Game.prototype.resetLine = function()
  */
 Game.prototype.advanceStage = function()
 {
+  // HACK: force forward message if stage is completed during a reply delay
+  if(this.isReplyButtonEnabled)
+  {
+    this.messageTimer = 0;
+    this.currentMessageIndex++;
+    this.hasReplied = false;
+    this.hasStagedMessage = false;
+    this.disableReplyButton();
+    this.resetReplyButtonText();
+  }
+
   if(this.isScoreEnabled)
   {
     this.totalScore += this.currentScore;
