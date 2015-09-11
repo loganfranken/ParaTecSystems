@@ -30,7 +30,7 @@ var stages = [
     /* Stage 5 */ 'S(10,25);E(90,25);B(0,50,100,20);B(0,80,30,20);B(70,80,30,20);B(35,65,30,25)',
   ],
 
-  // Day 4 (Chance of reply, report on scoring*)
+  // Day 4 (Chance of reply, report on scoring)
   [
     /* Stage 0 */ 'S(10,25);E(90,85);C(90,40);C(90,60)',
     /* Stage 1 */ 'S(35,25);E(50,75);C(50,15);C(25,40);C(65,25);C(75,40);C(45,30);C(55,30)',

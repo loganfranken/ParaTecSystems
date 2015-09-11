@@ -83,3 +83,9 @@ messages[3][3] = [
   { speaker: 'Otto', content: "Aww, no problem", delay: 10, condition: function(game) { return game.repliedToLastMessage; } },
   { speaker: 'Otto', content: "You'll do great here", delay: 10, condition: function(game) { return !game.repliedToLastMessage; } }
 ];
+
+/* Day 4, Stage 5 */
+messages[3][5] = [
+  { speaker: 'ParaTec', content: "Your performance is unsatisfactory. Please try harder tomorrow.", condition: function(game) { return game.totalScore < 2200; } },
+  { speaker: 'ParaTec', content: "We are pleased with your performance. You are a star member of the ParaTec family.", condition: function(game) { return game.totalScore >= 2200; } },
+];
