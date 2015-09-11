@@ -54,7 +54,6 @@ messages[1][3] = [
   { speaker: 'Otto', content: "Alright, I'll leave you to it", delay: 20, condition: function(game) { return !game.repliedToLastMessage; } },
 ];
 
-//
 /* Day 3, Stage 0 */
 messages[2][0] = [
   { speaker: 'Otto', content: "We're turning on scoring for you now" },
@@ -63,7 +62,6 @@ messages[2][0] = [
   { speaker: 'Otto', content: "You're doing just fine", delay: 20 }
 ];
 
-//
 /* Day 3, Stage 3 */
 messages[2][3] = [
   { speaker: 'Otto', content: "Be honest" },
@@ -72,7 +70,6 @@ messages[2][3] = [
   { speaker: 'Otto', content: "Well, don't let it freak you out if it is", delay: 20, condition: function(game) { return !game.repliedToLastMessage; } }
 ];
 
-//
 /* Day 3, Stage 5 */
 messages[2][5] = [
   { speaker: 'ParaTec', content: "Your performance is unsatisfactory. Please try harder tomorrow.", condition: function(game) { return game.totalScore < 4500; } },
@@ -91,8 +88,8 @@ messages[3][3] = [
 //
 /* Day 4, Stage 5 */
 messages[3][5] = [
-  { speaker: 'ParaTec', content: "Your performance is unsatisfactory. Please try harder tomorrow.", condition: function(game) { return game.totalScore < 120000; } },
-  { speaker: 'ParaTec', content: "We are pleased with your performance. You are a star member of the ParaTec family.", condition: function(game) { return game.totalScore >= 120000; } },
+  { speaker: 'ParaTec', content: "Your performance is unsatisfactory. Please try harder tomorrow.", condition: function(game) { return game.totalScore < 10000; } },
+  { speaker: 'ParaTec', content: "We are pleased with your performance. You are a star member of the ParaTec family.", condition: function(game) { return game.totalScore >= 10000; } },
 ];
 
 //
