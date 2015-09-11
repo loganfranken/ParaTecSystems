@@ -137,6 +137,12 @@ Game.prototype.advanceStage = function()
 
     this.currentDay++;
     this.currentStage = 0;
+
+    if(this.currentDay > stages.length - 1)
+    {
+      this.currentState = GameState.Ended;
+      return;
+    }
   }
   else
   {
@@ -215,6 +221,11 @@ Game.prototype.loadStage = function(dayIndex, stageIndex)
  */
 Game.prototype.update = function()
 {
+  if(this.currentState === GameState.Ended)
+  {
+    return;
+  }
+
   this.handleMouseUp();
 
   // STATE: Finished stage
@@ -532,8 +543,14 @@ Game.prototype.draw = function()
   // Clear the canvas
   context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 
+  // STATE: Game Ended
+  if(this.currentState === GameState.Ended)
+  {
+    this.drawEndScreen();
+  }
+
   // STATE: Start Screen
-  if(this.currentState === GameState.Starting)
+  else if(this.currentState === GameState.Starting)
   {
     this.drawTitleScreen(
       GameSettings.Title.toUpperCase(),
@@ -682,6 +699,35 @@ Game.prototype.drawTitleScreen = function(title, subtitle)
     context.font = GameSettings.TitleScreenSubtitleFontStyle;
     context.fillText(subtitleText, this.halfCanvasWidth, this.canvasHeight - 20);
   }
+}
+
+Game.prototype.drawEndScreen = function()
+{
+  var context = this.context;
+
+  // Background
+  context.fillStyle = GameSettings.BackgroundFillStyle;
+  context.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
+  context.textAlign = 'center';
+  context.fillStyle = GameSettings.TextFillStyle;
+
+  // "The End"
+  context.textBaseline = 'middle';
+  context.font = GameSettings.TitleScreenFontStyle;
+  context.fillText("END OF FIRST WEEK", this.halfCanvasWidth, this.halfCanvasHeight);
+
+  // Results
+  var resultText = "FINAL SCORE: " + this.totalScore + "\n";
+
+  if(this.replyCount > 2)
+  {
+    resultText += "OTTO SAYS HI";
+  }
+
+  context.textBaseline = 'middle';
+  context.font = GameSettings.TitleScreenFontStyle;
+  context.fillText(resultText, this.halfCanvasWidth, this.halfCanvasHeight + 100);
 }
 
 /**
