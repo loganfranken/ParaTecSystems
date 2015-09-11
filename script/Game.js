@@ -9,9 +9,9 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.canvas = canvas;
   this.context = canvas.getContext("2d");
 
+  // Properties: Canvas Dimensions
   this.canvasWidth = canvas.width;
   this.halfCanvasWidth = (canvas.width/2);
-
   this.canvasHeight = canvas.height;
   this.halfCanvasHeight = (canvas.height/2);
 
@@ -64,13 +64,13 @@ function Game(canvas, messageLogElement, replyButtonElement)
   this.currentScore = 0;
   this.totalScore = 0;
 
-  // Scanlines
+  // Properties: Scanlines
   this.scanLineImage = new Image();
   this.scanLineImage.src = "images/scanlines.png";
 
+  // Properties: Stage Progression
   this.isScoreEnabled = false;
   this.isReflectedLineEnabled = true;
-
 }
 
 /**
@@ -701,6 +701,9 @@ Game.prototype.drawTitleScreen = function(title, subtitle)
   }
 }
 
+/**
+ * Draws the game's end screen
+ */
 Game.prototype.drawEndScreen = function()
 {
   var context = this.context;
@@ -771,35 +774,54 @@ Game.prototype.drawUserLine = function(isReflected)
   context.stroke();
 }
 
+/**
+ * Enables the reply button, so that the user CAN use it
+ */
 Game.prototype.enableReplyButton = function()
 {
   this.replyButtonElement.className = 'button';
   this.isReplyButtonEnabled = true;
 }
 
+/**
+ * Disables the reply button, so that the user CAN NOT use it
+ */
 Game.prototype.disableReplyButton = function()
 {
   this.replyButtonElement.className = 'button disabled';
   this.isReplyButtonEnabled = false;
 }
 
+/**
+ * Marks the reply button as active
+ */
 Game.prototype.activateReplyButton = function()
 {
   this.replyButtonElement.className = 'button active';
   this.isReplyButtonActive = true;
 }
 
+/**
+ * Removes the "active" state from the reply button
+ */
 Game.prototype.deactivateReplyButton = function()
 {
   this.replyButtonElement.className = 'button';
   this.isReplyButtonActive = false;
 }
 
+/**
+ * Updates the text of the reply button
+ * @param {string} text  -  Text to display on the reply button
+ */
 Game.prototype.updateReplyButtonText = function(text)
 {
   this.replyButtonElement.innerHTML = text;
 }
 
+/**
+ * Resets the text of the reply button to its original value
+ */
 Game.prototype.resetReplyButtonText = function()
 {
   this.replyButtonElement.innerHTML = 'Reply';
