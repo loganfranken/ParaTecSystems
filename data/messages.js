@@ -98,6 +98,6 @@ messages[4][0] = [
 
 /* Day 5, Stage 5 */
 messages[4][5] = [
-  { speaker: 'ParaTec', content: "Your peformance has been adequate this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore < 200000; } },
-  { speaker: 'ParaTec', content: "Your performance has been exceptional this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore >= 200000; } },
+  { speaker: 'ParaTec', content: "Your peformance has been adequate this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore < 15000; } },
+  { speaker: 'ParaTec', content: "Your performance has been exceptional this week. Welcome to the ParaTec family.", condition: function(game) { return game.totalScore >= 15000; } },
 ];
