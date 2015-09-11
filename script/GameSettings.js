@@ -18,7 +18,7 @@ var GameSettings = {
   NodeEmblemFillStyle: '#000',
 
   // Message Settings
-  ReplyTimerMax: 10,
+  ReplyTimerMax: 30,
 
   // Title Screen Timer Settings
   DayIntroTimerMax: 20,
